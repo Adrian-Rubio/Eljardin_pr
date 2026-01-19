@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const Home = () => {
     const { siteConfig } = useConfig();
     const [activeFaq, setActiveFaq] = useState(null);
+    const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
 
     const faqs = [
         {
@@ -19,24 +20,33 @@ const Home = () => {
         }
     ];
 
-    const dishes = [
-        { id: 1, img: "/images/dish1.png" },
-        { id: 2, img: "/images/dish2.png" },
-        { id: 3, img: "/images/dish3.png" },
-        { id: 4, img: "/images/dish4.png" },
+    // Carousel Images
+    const heroImages = [
+        "/images/imagenes%20genéricas/Alma-39.jpg",
+        "/images/imagenes%20genéricas/Alma-4.jpg",
+        "/images/imagenes%20genéricas/Alma-41.jpg",
+        "/images/imagenes%20genéricas/JAS-111.jpg",
+        "/images/imagenes%20genéricas/JAS-82-1.jpg"
     ];
+
+    // Dish Gallery Images
+    const dishes = [
+        { id: 1, img: "/images/platos/Alma-34.jpg" },
+        { id: 2, img: "/images/platos/Alma-52.jpg" },
+        { id: 3, img: "/images/platos/Alma-7.jpg" },
+        { id: 4, img: "/images/platos/JAS-2.jpg" }, // Adjusted to 4 for the grid row
+    ];
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentHeroIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
+        }, 5000); // Change image every 5 seconds
+
+        return () => clearInterval(interval);
+    }, [heroImages.length]);
 
     const toggleFaq = (index) => {
         setActiveFaq(activeFaq === index ? null : index);
-    };
-
-    const itemVariants = {
-        hidden: { y: 20, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            transition: { duration: 0.8, ease: [0.6, 0.05, 0.1, 0.9] }
-        }
     };
 
     return (
@@ -46,16 +56,27 @@ const Home = () => {
             animate="visible"
             variants={{ visible: { opacity: 1, transition: { staggerChildren: 0.1 } } }}
         >
-            {/* 1. HERO FULL WIDTH */}
+            {/* 1. HERO FULL WIDTH (CAROUSEL) */}
             <section className="hero-full">
-                <img src="/images/jardin-hero.png" alt="El Jardín de Arturo Soria" />
+                <AnimatePresence mode='wait'>
+                    <motion.img
+                        key={currentHeroIndex}
+                        src={heroImages[currentHeroIndex]}
+                        alt="El Jardín de Arturo Soria - Ambiente"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1.5 }}
+                        style={{ position: 'absolute', width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                </AnimatePresence>
             </section>
 
             {/* 2. DISH GALLERY */}
             <section className="dish-gallery">
                 {dishes.map(dish => (
                     <div key={dish.id} className="gallery-item">
-                        <img src={dish.img} alt={`Plato ${dish.id}`} />
+                        <img src={dish.img} alt={`Plato El Jardín ${dish.id}`} />
                     </div>
                 ))}
             </section>
@@ -63,7 +84,7 @@ const Home = () => {
             {/* 3. IDENTITY SECTION (BENEDETTI) */}
             <section className="identity-section">
                 <div className="identity-left">
-                    <img src="/images/award_prize.png" alt="Premio Hot Concepts" />
+                    <img src="/images/HotConcepts.png" alt="Premio Hot Concepts Ganador 2021" />
                 </div>
                 <div className="identity-right">
                     <h2 className="section-title">El Jardín de Arturo Soria</h2>
