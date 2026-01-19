@@ -34,13 +34,15 @@ const Home = () => {
         { id: 1, img: "/images/platos/Alma-34.jpg" },
         { id: 2, img: "/images/platos/Alma-52.jpg" },
         { id: 3, img: "/images/platos/Alma-7.jpg" },
-        { id: 4, img: "/images/platos/JAS-2.jpg" }, // Adjusted to 4 for the grid row
+        { id: 4, img: "/images/platos/JAS-2.jpg" },
+        { id: 5, img: "/images/platos/JAS-59.jpg" },
+        { id: 6, img: "/images/platos/JDAS-26.jpg" },
     ];
 
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentHeroIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
-        }, 5000); // Change image every 5 seconds
+        }, 8000); // Slower: Change image every 8 seconds
 
         return () => clearInterval(interval);
     }, [heroImages.length]);
@@ -63,10 +65,10 @@ const Home = () => {
                         key={currentHeroIndex}
                         src={heroImages[currentHeroIndex]}
                         alt="El Jardín de Arturo Soria - Ambiente"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
+                        initial={{ opacity: 0, scale: 1.1 }} // Start slightly zoomed in
+                        animate={{ opacity: 1, scale: 1 }}    // Settle to normal
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 1.5 }}
+                        transition={{ duration: 2.5, ease: "easeInOut" }} // Slower, fluid transition
                         style={{ position: 'absolute', width: '100%', height: '100%', objectFit: 'cover' }}
                     />
                 </AnimatePresence>
