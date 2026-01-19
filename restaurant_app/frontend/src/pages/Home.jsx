@@ -59,17 +59,24 @@ const Home = () => {
             variants={{ visible: { opacity: 1, transition: { staggerChildren: 0.1 } } }}
         >
             {/* 1. HERO FULL WIDTH (CAROUSEL) */}
-            <section className="hero-full">
-                <AnimatePresence mode='wait'>
+            <section className="hero-full" style={{ position: 'relative' }}>
+                <AnimatePresence initial={false}>
                     <motion.img
                         key={currentHeroIndex}
                         src={heroImages[currentHeroIndex]}
                         alt="El Jardín de Arturo Soria - Ambiente"
-                        initial={{ opacity: 0, scale: 1.1 }} // Start slightly zoomed in
-                        animate={{ opacity: 1, scale: 1 }}    // Settle to normal
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 2.5, ease: "easeInOut" }} // Slower, fluid transition
-                        style={{ position: 'absolute', width: '100%', height: '100%', objectFit: 'cover' }}
+                        transition={{ duration: 2.5, ease: "linear" }}
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover'
+                        }}
                     />
                 </AnimatePresence>
             </section>

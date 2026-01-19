@@ -418,9 +418,10 @@ h3 {
 /* Dish Gallery */
 .dish-gallery {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    /* Updated to 6 columns */
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 columns for larger, suitable size */
+    gap: 30px;
+    /* Slightly more gap for elegance */
     padding: 80px 0;
     max-width: var(--max-width);
     margin: 0 auto;
