@@ -421,15 +421,16 @@ h3 {
     align-items: center;
     gap: 20px;
     padding: 80px 2rem;
-    max-width: var(--max-width);
+    max-width: 1400px;
+    /* Increased for larger images */
     margin: 0 auto;
 }
 
 .dish-gallery {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    /* 4 columns for original size */
-    gap: 20px;
+    gap: 25px;
+    /* Slightly more balanced gap */
     flex: 1;
     overflow: hidden;
 }
@@ -462,6 +463,9 @@ h3 {
 .gallery-item {
     aspect-ratio: 1/1;
     overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    /* Subtle dark border for definition */
+    background: white;
 }
 
 .gallery-item img {
