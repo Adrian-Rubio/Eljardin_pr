@@ -14,24 +14,24 @@ const Home = () => {
 
     const faqs = [
         {
-            question: "¿Cómo hago una reserva?",
-            answer: "Si sois un buen grupo llámanos y te guardamos sitio. Si vienes solo o en pareja, vente directo y buscamos hueco."
+            question: "¿Cómo puedo realizar una reserva?",
+            answer: "Puede reservar su mesa a través de nuestra sección de reservas online o llamándonos directamente. Para grupos grandes, recomendamos la reserva telefónica para asegurar la mejor ubicación."
         },
         {
-            question: "Política de cancelación",
-            answer: "Si reservaste y al final no puedes venir, avísanos con tiempo. No nos gusta ver mesas vacías cuando alguien más pudo haber disfrutado. Sé buena gente y llámanos."
+            question: "Nuestro compromiso con la calidad",
+            answer: "En El Jardín de Arturo Soria, seleccionamos cada ingrediente con rigor. Desde nuestros arroces 'Molino Roca' hasta nuestras carnes de alta maduración, la calidad es nuestra esencia."
         },
         {
-            question: "Alergias e intolerancias",
-            answer: "Lo primero, avísanos cuando pidas. Lo segundo, confía en que aquí nos tomamos en serio lo que va en el plato. Si hay algo que no puedes comer, lo adaptamos o te recomendamos lo mejor para ti."
+            question: "Alérgenos e intolerancias",
+            answer: "Su bienestar es nuestra prioridad. Disponemos de fichas técnicas de cada plato. Por favor, comunique cualquier alergia a nuestro personal para que podamos ofrecerle la mejor experiencia adaptada."
         },
         {
-            question: "¿Se puede venir con niños?",
-            answer: "Claro, pero recuerda que aquí el ruido lo pone la música y no los gritos. Si vienen peques, bienvenidos… pero que traigan buen saque, que aquí se come en serio."
+            question: "Ambiente y Experiencia",
+            answer: "Ofrecemos un entorno sofisticado y natural, ideal para cenas íntimas, encuentros familiares o eventos corporativos en un oasis botánico en el corazón de Arturo Soria."
         },
         {
-            question: "Código de vestimenta",
-            answer: "La única regla es venir con hambre. Si eso, ponte algo cómodo para disfrutar bien la comida. Pero si te vienes elegante, tampoco te vamos a juzgar."
+            question: "Celebraciones y Eventos Especiales",
+            answer: "Contamos con espacios versátiles y menús personalizados para que sus eventos sean inolvidables. Contacte con nuestro equipo de eventos para más información."
         }
     ];
 
@@ -117,8 +117,8 @@ const Home = () => {
                 >
                     <EditableImage
                         configKey="heroImage"
-                        defaultSrc="/images/home-hero-new.jpg"
-                        alt="Plato estrella Gulah"
+                        defaultSrc="/images/jardin-hero.png"
+                        alt="El Jardín de Arturo Soria Interior"
                         className="hero-image"
                     />
                     <motion.div

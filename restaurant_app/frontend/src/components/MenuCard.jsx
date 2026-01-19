@@ -67,14 +67,18 @@ const MenuCard = ({ item, formatPrice, ALLERGEN_ICONS }) => {
                 <p className="description">{item.description || 'Sin descripción'}</p>
 
                 <div className="footer-row">
-                    <span className="price">
-                        {safeVariants && safeVariants.length >= 2
-                            ? `${formatPrice(safeVariants[0]?.price)} / ${formatPrice(safeVariants[1]?.price)}`
-                            : safeVariants && safeVariants.length === 1
-                                ? formatPrice(safeVariants[0]?.price)
-                                : formatPrice(item.base_price)
-                        }
-                    </span>
+                    <div className="price-container" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                        {safeVariants && safeVariants.length > 0 ? (
+                            safeVariants.map((v, idx) => (
+                                <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', width: '100%', gap: '15px' }}>
+                                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>{v.name}</span>
+                                    <span className="price" style={{ fontSize: '1.2rem' }}>{formatPrice(v.price)}</span>
+                                </div>
+                            ))
+                        ) : (
+                            <span className="price">{formatPrice(item.base_price)}</span>
+                        )}
+                    </div>
                 </div>
             </div>
         </motion.div>

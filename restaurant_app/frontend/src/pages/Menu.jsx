@@ -23,7 +23,22 @@ const ALLERGEN_ICONS = {
     "Cacahuetes": "/icons/simbolo-alergeno-cacahuetes.png"
 };
 
-const PREFERRED_ORDER = ['ENTRANTES', 'PO BOYS', 'PATATAS', 'ENSALADAS', 'BRIOCHE', 'POSTRES', 'SALSAS'];
+const PREFERRED_ORDER = [
+    'BOCADOS PARA EMPEZAR',
+    'PAN Y APERITIVO',
+    'NUESTROS ARROCES PARA COMPARTIR',
+    'ALMA CARNÍVORA',
+    'ALMA MARINERA',
+    'GUARNICIONES',
+    'ALMA PASTELERA',
+    'TINTOS DOP MADRID Y SIERRA DE GREDOS',
+    'TINTOS DOCA RIOJA',
+    'DOP RIBERA DEL DUERO',
+    'BLANCOS. DO RUEDA',
+    'BLANCOS DO RÍAS BAIXAS',
+    'COCTELES',
+    'GIN'
+];
 
 /**
  * Menu Page Component
@@ -31,7 +46,7 @@ const PREFERRED_ORDER = ['ENTRANTES', 'PO BOYS', 'PATATAS', 'ENSALADAS', 'BRIOCH
  * Supports dynamic categories from the database.
  */
 const Menu = () => {
-    const [activeCategory, setActiveCategory] = useState('ENTRANTES');
+    const [activeCategory, setActiveCategory] = useState('BOCADOS PARA EMPEZAR');
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
 

@@ -10,9 +10,9 @@ const Footer = () => {
         <footer className="glass-card" style={{ marginTop: '5rem', borderRadius: 'var(--radius) var(--radius) 0 0', padding: '4rem 2rem' }}>
             <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '3rem' }}>
                 <div className="footer-brand">
-                    <img src="/images/logo.png" alt="Gulah Logo" style={{ height: '50px', marginBottom: '1.5rem', width: 'auto', mixBlendMode: 'multiply' }} />
+                    <img src="/images/logo.png" alt="El Jardín Logo" style={{ height: '50px', marginBottom: '1.5rem', width: 'auto', mixBlendMode: 'multiply' }} />
                     <p style={{ color: 'var(--text-muted)', maxWidth: '300px' }}>
-                        Street food salvaje, auténtica y sin filtros. Pasión por el sabor en cada bocado.
+                        Un oasis gastronómico en Arturo Soria. Sabores tradicionales con un toque contemporáneo.
                     </p>
                 </div>
 
@@ -47,7 +47,7 @@ const Footer = () => {
                     <h4 style={{ marginBottom: '1.5rem', textTransform: 'uppercase' }}>Síguenos</h4>
                     <div style={{ display: 'flex', gap: '1.5rem' }}>
                         <a
-                            href="https://www.instagram.com/gulah_poboys/?hl=es"
+                            href="https://www.instagram.com/eljardin_arturosoria/"
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{
@@ -69,13 +69,13 @@ const Footer = () => {
                             }}
                         >
                             <Instagram size={28} />
-                            <span>@gulah_poboys</span>
+                            <span>@eljardin_arturosoria</span>
                         </a>
                     </div>
                 </div>
             </div>
             <div style={{ textAlign: 'center', marginTop: '4rem', paddingOver: '2rem', borderTop: '1px solid rgba(0,0,0,0.05)', color: 'var(--text-muted)', fontSize: '0.9rem', position: 'relative' }}>
-                <p>&copy; {new Date().getFullYear()} Gulah Restaurant. Todos los derechos reservados.</p>
+                <p>&copy; {new Date().getFullYear()} El Jardín de Arturo Soria. Todos los derechos reservados.</p>
                 <Link to="/admin" className="admin-gear" style={{ position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)' }}>
                     <Settings size={20} />
                 </Link>
