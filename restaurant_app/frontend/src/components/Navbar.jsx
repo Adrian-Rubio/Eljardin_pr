@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, Flame } from 'lucide-react';
+import { Menu, X, Instagram, Facebook } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
@@ -13,6 +13,7 @@ const Navbar = () => {
         { name: 'CARTAS', path: '/menu' },
         { name: 'EVENTOS', path: '/events' },
         { name: 'PRENSA', path: '/press' },
+        { name: 'RESTAURANTES GRUPO', path: '/grupo' },
     ];
 
     return (
@@ -22,23 +23,29 @@ const Navbar = () => {
                     <img
                         src="/images/logo_jardin.png"
                         alt="El Jardín de Arturo Soria"
-                        style={{ height: '70px', width: 'auto' }}
+                        className="navbar-logo-img"
                     />
                 </Link>
             </div>
 
-            {/* Desktop Links & Reserve */}
+            {/* Desktop Center Links */}
+            <ul className="nav-links desktop-only">
+                {links.map(link => (
+                    <li key={link.path}>
+                        <Link to={link.path}>{link.name}</Link>
+                    </li>
+                ))}
+            </ul>
+
+            {/* Desktop Right: Reserve & Socials */}
             <div className="nav-right desktop-only">
-                <ul className="nav-links">
-                    {links.map(link => (
-                        <li key={link.path}>
-                            <Link to={link.path}>{link.name}</Link>
-                        </li>
-                    ))}
-                </ul>
-                <Link to="/reservations" className="btn-reserve">
+                <Link to="/reservations" className="btn-reserve-solid">
                     RESERVAR
                 </Link>
+                <div className="nav-social-icons">
+                    <a href="https://instagram.com" target="_blank" rel="noreferrer"><Instagram size={20} /></a>
+                    <a href="https://facebook.com" target="_blank" rel="noreferrer"><Facebook size={20} /></a>
+                </div>
             </div>
 
             {/* Mobile Toggle */}
@@ -64,15 +71,14 @@ const Navbar = () => {
                                     </Link>
                                 </li>
                             ))}
-                            <li>
-                                <Link
-                                    to="/reservations"
-                                    className="btn-reserve"
-                                    onClick={() => setIsOpen(false)}
-                                    style={{ textAlign: 'center', marginTop: '1rem' }}
-                                >
+                            <li style={{ marginTop: '1rem' }}>
+                                <Link to="/reservations" className="btn-reserve-solid" onClick={() => setIsOpen(false)}>
                                     RESERVAR
                                 </Link>
+                            </li>
+                            <li className="mobile-socials">
+                                <Instagram size={24} />
+                                <Facebook size={24} />
                             </li>
                         </ul>
                     </motion.div>
