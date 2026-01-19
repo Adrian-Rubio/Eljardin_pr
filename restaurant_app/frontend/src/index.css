@@ -12,10 +12,10 @@
     font-style: normal;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Montserrat:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 
 :root {
-    /* Premium Botanical Palette */
+    /* Premium Botanical Palette - Refined */
     --forest-green: #1a3a16;
     --deep-moss: #2c4c23;
     --leaf-green: #4a7c44;
@@ -25,32 +25,24 @@
     --dark-gold: #9a7d3a;
     --rich-black: #0c140b;
     --white-pearl: #ffffff;
-    --dusty-rose: #d4a373;
-    /* Accent for flowers */
+    --text-muted: #6b7280;
 
     /* Brand Mapping */
     --primary: var(--forest-green);
-    --primary-light: var(--deep-moss);
     --secondary: var(--gold-leaf);
-    --background: var(--cream-silk);
-    --card-bg: rgba(255, 255, 255, 0.7);
+    --background: var(--white-pearl);
     --text: var(--rich-black);
-    --text-muted: #4e5a4d;
-    --accent: var(--gold-leaf);
 
-    /* Typography */
+    /* Typography - Updated to geometric Pier Sans vibe (Outfit) */
     --font-primary: 'Playfair Display', serif;
-    --font-secondary: 'Montserrat', sans-serif;
-    --base-font-size: 16px;
+    --font-secondary: 'Outfit', sans-serif;
+    --base-font-size: 15px;
 
     /* Spacing & Borders */
-    --max-width: 1400px;
-    --radius: 20px;
-    --radius-sm: 10px;
-    --shadow: 0 15px 45px rgba(26, 58, 22, 0.08);
-    --shadow-hover: 0 25px 60px rgba(26, 58, 22, 0.15);
-    --glass: rgba(255, 255, 255, 0.4);
-    --glass-border: rgba(255, 255, 255, 0.5);
+    --max-width: 1280px;
+    --radius: 0px;
+    /* Minimalist sharp edges or very small radius */
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.03);
 }
 
 * {
@@ -62,22 +54,19 @@
 body {
     font-family: var(--font-secondary);
     background-color: var(--background);
-    background-image:
-        radial-gradient(circle at 10% 20%, rgba(74, 124, 68, 0.03) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(197, 160, 79, 0.03) 0%, transparent 40%);
     color: var(--text);
     line-height: 1.6;
     font-size: var(--base-font-size);
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
 
 h1,
 h2,
 h3,
-h4,
-.font-elegant {
-    font-family: var(--font-primary);
-    font-weight: 700;
+h4 {
+    font-weight: 600;
+    letter-spacing: -0.02em;
 }
 
 .app-container {
@@ -110,41 +99,41 @@ nav {
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 1.5rem;
+    gap: 2rem;
     align-items: center;
 }
 
 .nav-links a {
     text-decoration: none;
-    color: var(--text-muted);
-    font-size: 11.5px;
-    font-weight: 500;
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 400;
     text-transform: uppercase;
-    letter-spacing: 1.2px;
-    transition: all 0.3s ease;
+    letter-spacing: 0.15em;
+    transition: opacity 0.3s ease;
     padding: 5px 0;
 }
 
 .nav-links a:hover {
-    color: var(--primary);
+    opacity: 0.6;
 }
 
 .nav-right {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 2rem;
 }
 
 .btn-reserve-solid {
-    background-color: #8fa18a;
-    /* Olive color from image */
+    background-color: var(--primary);
     color: white !important;
-    padding: 0.6rem 1.2rem;
-    border-radius: 2px;
-    font-size: 13px;
-    font-weight: 600;
+    padding: 0.7rem 1.8rem;
+    border-radius: 0;
+    /* Minimalist square */
+    font-size: 11px;
+    font-weight: 500;
     text-decoration: none;
-    letter-spacing: 1.5px;
+    letter-spacing: 0.2em;
     transition: background 0.3s ease;
 }
 
@@ -154,30 +143,27 @@ nav {
 
 .nav-social-icons {
     display: flex;
-    gap: 10px;
+    gap: 15px;
 }
 
 .nav-social-icons a {
-    color: #9a7d3a;
-    /* Gold/Bronze from image circles */
+    color: var(--text);
     background: transparent;
-    border: 1.5px solid #d4a373;
-    /* Circular border color */
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
+    border: none;
+    width: auto;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: opacity 0.3s ease;
 }
 
 .nav-social-icons a:hover {
-    transform: scale(1.1);
+    opacity: 0.5;
 }
 
 .navbar-logo-img {
-    height: 85px;
+    height: 70px;
     width: auto;
 }
 
@@ -396,8 +382,8 @@ h3 {
 .hero-full {
     width: 100vw;
     margin-left: calc(-50vw + 50%);
-    height: 60vh;
-    min-height: 400px;
+    height: 75vh;
+    min-height: 500px;
     position: relative;
     overflow: hidden;
 }
@@ -412,12 +398,14 @@ h3 {
 .dish-gallery {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
-    padding: 2rem 0;
+    gap: 20px;
+    padding: 80px 0;
+    max-width: var(--max-width);
+    margin: 0 auto;
 }
 
 .gallery-item {
-    aspect-ratio: 16/10;
+    aspect-ratio: 1/1;
     overflow: hidden;
 }
 
@@ -425,72 +413,101 @@ h3 {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.8s ease;
+    transition: transform 1.2s cubic-bezier(0.2, 0, 0.2, 1);
 }
 
 .gallery-item:hover img {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
-/* Identity Section Refinement */
+/* Identity Section */
 .identity-section {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    padding: 6rem 2rem;
+    gap: 0;
+    padding: 120px 0;
+    max-width: var(--max-width);
+    margin: 0 auto;
     align-items: center;
+}
+
+.identity-left {
+    padding-right: 60px;
 }
 
 .identity-left img {
     width: 100%;
-    border-radius: var(--radius-sm);
+    max-width: 500px;
+    display: block;
+    margin: 0 auto;
 }
 
 .identity-right {
-    text-align: center;
+    text-align: left;
+    padding-left: 60px;
 }
 
 .section-title {
     font-family: var(--font-primary);
-    font-size: 3.5rem;
-    color: #8fa18a;
-    /* Soft Green from image */
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 2.5rem;
+    line-height: 1.2;
+}
+
+.benedetti-quote {
+    font-family: var(--font-primary);
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: var(--text);
+    font-style: italic;
     margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.benedetti-author {
+    font-family: var(--font-secondary);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
 }
 
 /* Video Section */
 .video-section {
-    padding: 4rem 0;
+    padding: 120px 0;
     text-align: center;
+    background: #fdfaf5;
 }
 
 .video-container {
     position: relative;
     width: 100%;
-    max-width: 1000px;
-    margin: 2rem auto;
+    max-width: 900px;
+    margin: 4rem auto 0;
     aspect-ratio: 16/9;
-    background: #eee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    overflow: hidden;
 }
 
 .play-button {
-    width: 120px;
-    height: 120px;
-    background: rgba(255, 255, 255, 0.9);
+    width: 100px;
+    height: 100px;
+    background: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    transition: all 0.4s ease;
+    z-index: 10;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .play-button:hover {
-    transform: scale(1.1);
+    transform: translate(-50%, -50%) scale(1.1);
 }
 
 .play-icon {
@@ -502,22 +519,24 @@ h3 {
 
 /* Text Block */
 .text-block-centered {
-    max-width: 900px;
-    margin: 4rem auto;
+    max-width: 750px;
+    margin: 150px auto;
     text-align: center;
     padding: 0 2rem;
 }
 
 .text-block-centered h2 {
-    color: #c5a04f;
-    font-size: 2.2rem;
-    margin-bottom: 2rem;
-    text-transform: none;
+    color: var(--secondary);
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+    font-family: var(--font-primary);
 }
 
 .text-block-centered p {
-    color: var(--text-muted);
-    line-height: 1.8;
+    color: var(--text);
+    font-size: 15px;
+    line-height: 2;
+    font-weight: 300;
 }
 
 @media (max-width: 968px) {

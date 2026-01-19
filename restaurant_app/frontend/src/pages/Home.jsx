@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useConfig } from '../context/ConfigContext';
-import MarqueeBanner from '../components/MarqueeBanner';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Home = () => {
@@ -102,8 +101,6 @@ const Home = () => {
                     En El Jardín de Arturo Soria descubrirás un rincón dentro del corazón de Madrid que no te dejará indiferente. Salones privados, terrazas techadas, espacios Chill-out y nuestro increíble y mágico Jardín...
                 </p>
             </section>
-
-            <MarqueeBanner />
 
             {/* FAQ Section */}
             <section className="faq-section" style={{ padding: '4rem 2rem' }}>
