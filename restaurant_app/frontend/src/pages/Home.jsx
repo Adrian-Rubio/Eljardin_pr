@@ -3,6 +3,7 @@ import { Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useConfig } from '../context/ConfigContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import EditableText from '../components/Editable/EditableText';
 
 const Home = () => {
     const { siteConfig } = useConfig();
