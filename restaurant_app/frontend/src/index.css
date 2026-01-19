@@ -420,17 +420,18 @@ h3 {
     display: flex;
     align-items: center;
     gap: 15px;
-    /* Tighter gap like in the screenshot */
-    padding: 100px 1rem;
-    max-width: 1600px;
-    /* Much larger as requested */
+    padding: 100px 3%;
+    /* Use percentage for fluid large size */
+    max-width: 1800px;
+    /* Nearly full width of most screens */
     margin: 0 auto;
+    width: 100%;
 }
 
 .dish-gallery {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
+    gap: 20px;
     flex: 1;
     overflow: hidden;
 }
