@@ -472,26 +472,26 @@ h3 {
 
 .section-title {
     font-family: var(--font-primary);
-    font-size: 2rem;
-    /* Slightly smaller for balance */
-    color: var(--primary);
+    /* Playfair Display */
+    font-size: 2.2rem;
+    color: #7d8a74;
+    /* Olive green specific to image */
     margin-bottom: 2rem;
     line-height: 1.2;
-    font-weight: 400;
+    font-weight: 500;
     text-transform: none;
-    /* Keep it natural */
 }
 
 .benedetti-quote {
     font-family: var(--font-secondary);
     font-size: 13px;
-    line-height: 2.8;
-    /* Increased line-height for more air */
-    color: var(--text);
+    line-height: 2.4;
+    /* Slightly tighter than 2.8 but breathable */
+    color: #4a4a4a;
+    /* Dark grey, not pure black */
     margin: 0 auto 2.5rem;
     max-width: 520px;
-    /* Slightly wider for the better leadings */
-    font-weight: 200;
+    font-weight: 300;
     text-align: center;
 }
 
