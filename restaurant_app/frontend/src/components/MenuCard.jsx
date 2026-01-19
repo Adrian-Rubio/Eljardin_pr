@@ -1,17 +1,6 @@
-import { Flame } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-/**
- * Component for rendering an individual menu item card.
- * Handles allergen icons, price variants, and status badges.
- * 
- * @param {Object} props - Component properties.
- * @param {Object} props.item - The menu item data object.
- * @param {Function} props.formatPrice - Helper function to format currency.
- * @param {Object} props.ALLERGEN_ICONS - Mapping of allergen names to icon paths.
- */
-const MenuCard = ({ item, formatPrice, ALLERGEN_ICONS }) => {
-    // Ensure nested data is correctly formatted
+const MenuCard = ({ item, formatPrice, ALLERGEN_ICONS, hideImage }) => {
     const safeAllergens = Array.isArray(item.allergens)
         ? item.allergens
         : (typeof item.allergens === 'string'
@@ -26,60 +15,53 @@ const MenuCard = ({ item, formatPrice, ALLERGEN_ICONS }) => {
 
     return (
         <motion.div
-            className="menu-card"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
+            className="menu-card-premium"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            style={{
+                padding: '20px 0',
+                borderBottom: '1px solid rgba(0,0,0,0.05)',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px'
+            }}
         >
-            <div className="menu-card-image">
-                {item.image_url ? (
-                    <img src={item.image_url} alt={item.name} />
-                ) : (
-                    <div className="no-image-placeholder">
-                        <Flame size={40} />
-                        <p>Imagen no disponible</p>
-                    </div>
-                )}
-                {(item.is_new || item.is_promoted) && (
-                    <div className="badge-container">
-                        {item.is_new && <span className="badge badge-new">Novedad</span>}
-                        {item.is_promoted && <span className="badge badge-promo">Oferta</span>}
-                    </div>
-                )}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <h3 style={{
+                    fontSize: '1.2rem',
+                    fontFamily: 'var(--font-secondary)',
+                    fontWeight: '500',
+                    letterSpacing: '0.05em',
+                    textTransform: 'uppercase',
+                    margin: 0
+                }}>
+                    {item.name}
+                </h3>
+                <span className="price-tag" style={{ fontSize: '1.1rem', fontWeight: '500', color: 'var(--primary)' }}>
+                    {safeVariants.length > 0 ? formatPrice(safeVariants[0].price) : formatPrice(item.base_price)}
+                </span>
             </div>
 
-            <div className="menu-card-content">
-                <div className="header-row">
-                    <h3>{item.name || 'Sin nombre'}</h3>
-                    <div className="allergens">
-                        {(safeAllergens || []).map((a, idx) => (
-                            <img
-                                key={`${item.id}-alg-${idx}`}
-                                src={ALLERGEN_ICONS[a] || "/icons/default.png"}
-                                alt={a}
-                                title={a}
-                                className="allergen-icon-img"
-                            />
-                        ))}
-                    </div>
-                </div>
+            <p style={{
+                fontSize: '13px',
+                color: 'var(--text-muted)',
+                lineHeight: '1.6',
+                margin: '5px 0',
+                maxWidth: '90%'
+            }}>
+                {item.description}
+            </p>
 
-                <p className="description">{item.description || 'Sin descripción'}</p>
-
-                <div className="footer-row">
-                    <div className="price-container" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        {safeVariants && safeVariants.length > 0 ? (
-                            safeVariants.map((v, idx) => (
-                                <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', width: '100%', gap: '15px' }}>
-                                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>{v.name}</span>
-                                    <span className="price" style={{ fontSize: '1.2rem' }}>{formatPrice(v.price)}</span>
-                                </div>
-                            ))
-                        ) : (
-                            <span className="price">{formatPrice(item.base_price)}</span>
-                        )}
-                    </div>
-                </div>
+            <div style={{ display: 'flex', gap: '8px', marginTop: '5px' }}>
+                {safeAllergens.map((alg, idx) => (
+                    <img
+                        key={idx}
+                        src={ALLERGEN_ICONS[alg] || '/icons/default.png'}
+                        alt={alg}
+                        style={{ height: '18px', opacity: 0.6 }}
+                        title={alg}
+                    />
+                ))}
             </div>
         </motion.div>
     );

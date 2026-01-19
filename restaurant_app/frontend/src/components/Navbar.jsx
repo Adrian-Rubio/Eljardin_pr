@@ -4,13 +4,19 @@ import { Menu, X, Instagram, Facebook } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
-    const [isOpen, setIsOpen] = useState(false);
-
-    const toggleMenu = () => setIsOpen(!isOpen);
+    const [isCartasOpen, setIsCartasOpen] = useState(false);
 
     const links = [
         { name: 'EL JARDÍN DE ARTURO SORIA', path: '/' },
-        { name: 'CARTAS', path: '/menu' },
+        {
+            name: 'CARTAS',
+            path: '/menu',
+            dropdown: [
+                { name: 'CARTA', path: '/menu/carta' },
+                { name: 'VINOS', path: '/menu/vinos' },
+                { name: 'COCTELERÍA', path: '/menu/cocteles' },
+            ]
+        },
         { name: 'EVENTOS', path: '/events' },
         { name: 'PRENSA', path: '/press' },
         { name: 'RESTAURANTES GRUPO', path: '/grupo' },
@@ -31,8 +37,22 @@ const Navbar = () => {
             {/* Desktop Center Links */}
             <ul className="nav-links desktop-only">
                 {links.map(link => (
-                    <li key={link.path}>
+                    <li
+                        key={link.name}
+                        className={link.dropdown ? 'has-dropdown' : ''}
+                        onMouseEnter={() => link.dropdown && setIsCartasOpen(true)}
+                        onMouseLeave={() => link.dropdown && setIsCartasOpen(false)}
+                    >
                         <Link to={link.path}>{link.name}</Link>
+                        {link.dropdown && isCartasOpen && (
+                            <ul className="dropdown-menu">
+                                {link.dropdown.map(subItem => (
+                                    <li key={subItem.path}>
+                                        <Link to={subItem.path}>{subItem.name}</Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </li>
                 ))}
             </ul>

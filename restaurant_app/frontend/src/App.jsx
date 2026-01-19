@@ -28,6 +28,7 @@ function App() {
                             <Routes>
                                 <Route path="/" element={<Home />} />
                                 <Route path="/menu" element={<Menu />} />
+                                <Route path="/menu/:type" element={<Menu />} />
                                 <Route path="/reservations" element={<Reservations />} />
                                 <Route path="/events" element={<Events />} />
                                 <Route path="/press" element={<Press />} />

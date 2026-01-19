@@ -14,6 +14,141 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
 
+/* --- PREMIUM FOOTER REDESIGN --- */
+.site-footer {
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+    padding: 60px 40px 30px;
+    font-size: 13px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 0.8fr 1.2fr 1.2fr;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.footer-col h4 {
+    color: white;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    margin-bottom: 25px;
+    font-family: var(--font-secondary);
+    font-weight: 500;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-col li {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-muted);
+}
+
+.footer-col .icon-circle {
+    color: var(--gold-leaf);
+    display: flex;
+    align-items: center;
+}
+
+.footer-logo-main {
+    height: 140px;
+    width: auto;
+}
+
+.valet-box {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.valet-box span {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+}
+
+.btn-reserve-footer {
+    background: white;
+    color: #333;
+    padding: 12px 30px;
+    border: none;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    font-size: 11px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.btn-reserve-footer:hover {
+    opacity: 0.9;
+}
+
+.footer-group-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.group-text {
+    font-family: var(--font-primary);
+    font-size: 24px;
+    font-style: italic;
+    color: white;
+}
+
+.group-subtext {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.footer-bottom {
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.03);
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.footer-bottom a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 10px;
+    transition: color 0.3s;
+}
+
+.footer-bottom a:hover {
+    color: white;
+}
+
+@media (max-width: 1200px) {
+    .footer-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+    }
+}
+
 :root {
     /* Premium Botanical Palette - Refined */
     --forest-green: #1a3a16;
@@ -25,7 +160,10 @@
     --dark-gold: #9a7d3a;
     --rich-black: #0c140b;
     --white-pearl: #ffffff;
-    --text-muted: #6b7280;
+    --text-muted: #999999;
+    --footer-bg: #2d2d2d;
+    /* Dark anthracite from reference */
+    --footer-text: #e0e0e0;
 
     /* Brand Mapping */
     --primary: var(--forest-green);
@@ -114,18 +252,44 @@ nav {
     align-items: center;
 }
 
-.nav-links a {
-    text-decoration: none;
-    color: var(--text);
-    font-size: 9.5px;
-    /* Even smaller for extreme elegance */
-    font-weight: 200;
-    /* Super thin weight */
-    text-transform: uppercase;
-    letter-spacing: 0.35em;
-    /* Increased tracking */
-    transition: opacity 0.3s ease;
-    padding: 5px 0;
+.nav-links li {
+    position: relative;
+    padding: 10px 0;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    list-style: none;
+    padding: 15px 0;
+    min-width: 180px;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.dropdown-menu li {
+    padding: 0 !important;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 10px 25px !important;
+    font-size: 10px !important;
+    letter-spacing: 0.2em !important;
+    white-space: nowrap;
+    color: var(--text) !important;
+}
+
+.dropdown-menu a:hover {
+    background: #f9f9f9;
+    opacity: 1 !important;
+    color: var(--primary) !important;
 }
 
 .nav-links a:hover {

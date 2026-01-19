@@ -1,84 +1,77 @@
-import { MapPin, Phone, Mail, Instagram, Settings } from 'lucide-react';
+import { MapPin, Phone, Mail, User, Car } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useConfig } from '../context/ConfigContext';
 import EditableText from './Editable/EditableText';
 
 const Footer = () => {
-    const { siteConfig } = useConfig();
-
     return (
-        <footer className="glass-card" style={{ marginTop: '5rem', borderRadius: 'var(--radius) var(--radius) 0 0', padding: '4rem 2rem' }}>
-            <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '3rem' }}>
-                <div className="footer-brand">
-                    <img src="/images/logo_jardin.png" alt="El Jardín Logo" style={{ height: '90px', marginBottom: '1.5rem', width: 'auto' }} />
-                    <p style={{ color: 'var(--text-muted)', maxWidth: '300px' }}>
-                        Un oasis gastronómico en Arturo Soria. Sabores tradicionales con un toque contemporáneo.
-                    </p>
+        <footer className="site-footer">
+            <div className="footer-container">
+                {/* 1. BRAND LOGO */}
+                <div className="footer-col brand">
+                    <img src="/images/logo_jardin.png" alt="El Jardín Logo" className="footer-logo-main" />
                 </div>
 
-                <div className="footer-contact">
-                    <h4 style={{ marginBottom: '1.5rem', textTransform: 'uppercase' }}>Contacto</h4>
-                    <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <li style={{ display: 'flex', gap: '0.8rem', color: 'var(--text-muted)' }}>
-                            <MapPin size={18} color="var(--primary)" />
-                            <EditableText configKey="address" />
-                        </li>
-                        <li style={{ display: 'flex', gap: '0.8rem', color: 'var(--text-muted)' }}>
-                            <Phone size={18} color="var(--primary)" />
+                {/* 2. CONTACTO */}
+                <div className="footer-col">
+                    <h4>CONTACTO</h4>
+                    <ul>
+                        <li>
+                            <span className="icon-circle"><Phone size={14} /></span>
                             <EditableText configKey="phone" />
                         </li>
-                        <li style={{ display: 'flex', gap: '0.8rem', color: 'var(--text-muted)' }}>
-                            <Mail size={18} color="var(--primary)" />
+                        <li>
+                            <span className="icon-circle"><Mail size={14} /></span>
                             <EditableText configKey="email" />
-                        </li>
-                        <li style={{ display: 'flex', flexWrap: 'wrap', gap: '0.8rem', color: 'var(--text-muted)' }}>
-                            <span style={{ fontWeight: 'bold', color: 'var(--text)' }}>Grupos:</span>
-                            <EditableText configKey="reservation_email" />
                         </li>
                     </ul>
                 </div>
 
-                <div className="footer-hours">
-                    <h4 style={{ marginBottom: '1.5rem', textTransform: 'uppercase' }}>Horario</h4>
-                    <EditableText configKey="hours" tag="p" style={{ color: 'var(--text-muted)' }} />
+                {/* 3. UBICACIÓN */}
+                <div className="footer-col">
+                    <h4>UBICACIÓN</h4>
+                    <ul>
+                        <li>
+                            <span className="icon-circle"><MapPin size={14} /></span>
+                            <EditableText configKey="address" />
+                        </li>
+                        <li style={{ marginTop: '5px' }}>
+                            <a href="https://maps.google.com" target="_blank" rel="noreferrer" style={{ color: 'var(--text-muted)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <Car size={14} />
+                                <span style={{ textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.1em' }}>Cómo llegar</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
 
-                <div className="footer-social">
-                    <h4 style={{ marginBottom: '1.5rem', textTransform: 'uppercase' }}>Síguenos</h4>
-                    <div style={{ display: 'flex', gap: '1.5rem' }}>
-                        <a
-                            href="https://www.instagram.com/eljardin_arturosoria/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{
-                                color: 'var(--text)',
-                                transition: 'all 0.3s ease',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '0.5rem',
-                                textDecoration: 'none',
-                                fontWeight: '600'
-                            }}
-                            onMouseOver={e => {
-                                e.currentTarget.style.color = 'var(--primary)';
-                                e.currentTarget.style.transform = 'translateY(-3px)';
-                            }}
-                            onMouseOut={e => {
-                                e.currentTarget.style.color = 'var(--text)';
-                                e.currentTarget.style.transform = 'translateY(0)';
-                            }}
-                        >
-                            <Instagram size={28} />
-                            <span>@eljardin_arturosoria</span>
-                        </a>
+                {/* 4. VALET (APARCACOCHES) */}
+                <div className="footer-col">
+                    <div className="valet-box">
+                        <User size={40} strokeWidth={1} />
+                        <span>Aparcacoches</span>
+                    </div>
+                </div>
+
+                {/* 5. RESERVAS BUTTON */}
+                <div className="footer-col" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <button className="btn-reserve-footer" onClick={() => window.open('https://portal.covermanager.com/reservar/?restaurant=el-jardin-arturo-soria', '_blank')}>
+                        RESERVAS
+                    </button>
+                </div>
+
+                {/* 6. GRUPO LOGO */}
+                <div className="footer-col">
+                    <div className="footer-group-logo">
+                        <span className="group-text">Alma of Spain</span>
+                        <span className="group-subtext">GRUPO</span>
                     </div>
                 </div>
             </div>
-            <div style={{ textAlign: 'center', marginTop: '4rem', paddingOver: '2rem', borderTop: '1px solid rgba(0,0,0,0.05)', color: 'var(--text-muted)', fontSize: '0.9rem', position: 'relative' }}>
-                <p>&copy; {new Date().getFullYear()} El Jardín de Arturo Soria. Todos los derechos reservados.</p>
-                <Link to="/admin" className="admin-gear" style={{ position: 'absolute', right: '0', top: '50%', transform: 'translateY(-50%)' }}>
-                    <Settings size={20} />
-                </Link>
+
+            {/* LOWER LINKS */}
+            <div className="footer-bottom">
+                <Link to="/privacidad">Políticas de privacidad</Link>
+                <Link to="/cookies">Políticas de cookies</Link>
+                <Link to="/legal">Aviso Legal</Link>
             </div>
         </footer>
     );
