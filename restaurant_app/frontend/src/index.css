@@ -415,16 +415,48 @@ h3 {
     object-fit: cover;
 }
 
-/* Dish Gallery */
-.dish-gallery {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* 3 columns for larger, suitable size */
-    gap: 30px;
-    /* Slightly more gap for elegance */
-    padding: 80px 0;
+/* Dish Gallery Slider */
+.dish-gallery-slider {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 80px 2rem;
     max-width: var(--max-width);
     margin: 0 auto;
+}
+
+.dish-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 columns for original size */
+    gap: 20px;
+    flex: 1;
+    overflow: hidden;
+}
+
+.slider-arrow {
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    padding: 10px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider-arrow:hover {
+    transform: scale(1.2);
+    opacity: 0.7;
+}
+
+.slider-arrow.left {
+    margin-right: 10px;
+}
+
+.slider-arrow.right {
+    margin-left: 10px;
 }
 
 .gallery-item {

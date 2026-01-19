@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useConfig } from '../context/ConfigContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -8,6 +8,7 @@ const Home = () => {
     const { siteConfig } = useConfig();
     const [activeFaq, setActiveFaq] = useState(null);
     const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
+    const [galleryIndex, setGalleryIndex] = useState(0);
 
     const faqs = [
         {
@@ -37,7 +38,20 @@ const Home = () => {
         { id: 4, img: "/images/platos/JAS-2.jpg" },
         { id: 5, img: "/images/platos/JAS-59.jpg" },
         { id: 6, img: "/images/platos/JDAS-26.jpg" },
+        { id: 7, img: "/images/platos/JDAS-15.jpg" },
+        { id: 8, img: "/images/platos/JDAS-71.jpg" },
+        { id: 9, img: "/images/platos/JAS-62.jpg" },
     ];
+
+    const nextGallery = () => {
+        setGalleryIndex((prev) => (prev + 1) % (dishes.length - 3));
+    };
+
+    const prevGallery = () => {
+        setGalleryIndex((prev) => (prev === 0 ? dishes.length - 4 : prev - 1));
+    };
+
+    const visibleDishes = dishes.slice(galleryIndex, galleryIndex + 4);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -81,13 +95,30 @@ const Home = () => {
                 </AnimatePresence>
             </section>
 
-            {/* 2. DISH GALLERY */}
-            <section className="dish-gallery">
-                {dishes.map(dish => (
-                    <div key={dish.id} className="gallery-item">
-                        <img src={dish.img} alt={`Plato El Jardín ${dish.id}`} />
-                    </div>
-                ))}
+            {/* 2. DISH GALLERY WITH ARROWS */}
+            <section className="dish-gallery-slider">
+                <button className="slider-arrow left" onClick={prevGallery}>
+                    <ChevronLeft size={32} />
+                </button>
+                <div className="dish-gallery">
+                    <AnimatePresence mode="popLayout" initial={false}>
+                        {visibleDishes.map(dish => (
+                            <motion.div
+                                key={dish.id}
+                                className="gallery-item"
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                transition={{ duration: 0.5 }}
+                            >
+                                <img src={dish.img} alt={`Plato El Jardín ${dish.id}`} />
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
+                </div>
+                <button className="slider-arrow right" onClick={nextGallery}>
+                    <ChevronRight size={32} />
+                </button>
             </section>
 
             {/* 3. IDENTITY SECTION (BENEDETTI) */}
