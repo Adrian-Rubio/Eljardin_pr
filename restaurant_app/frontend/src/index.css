@@ -421,16 +421,18 @@ h3 {
     align-items: center;
     gap: 15px;
     padding: 80px 2%;
-    max-width: 96vw;
-    /* Utilizing almost the entire screen width */
-    margin: 0 auto;
-    width: 100%;
+    width: 98vw;
+    /* Real full width regardless of container */
+    margin-left: calc(-49vw + 50%);
+    /* Center breakout technique */
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .dish-gallery {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
+    gap: 18px;
     flex: 1;
     overflow: hidden;
 }
