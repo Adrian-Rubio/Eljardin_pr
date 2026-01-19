@@ -1,11 +1,8 @@
-import { useState } from 'react';
-import { ArrowRight, Plus } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useConfig } from '../context/ConfigContext';
 import MarqueeBanner from '../components/MarqueeBanner';
-import EditableText from '../components/Editable/EditableText';
-import EditableImage from '../components/Editable/EditableImage';
-import EditableButton from '../components/Editable/EditableButton';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Home = () => {
@@ -61,6 +58,20 @@ const Home = () => {
         }
     };
 
+    const carouselImages = [
+        "/images/jardin-hero.png",
+    ];
+
+    const [currentSlide, setCurrentSlide] = useState(0);
+
+    useEffect(() => {
+        if (carouselImages.length <= 1) return;
+        const timer = setInterval(() => {
+            setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
+        }, 5000);
+        return () => clearInterval(timer);
+    }, [carouselImages.length]);
+
     return (
         <motion.div
             className="home-page"
@@ -71,56 +82,54 @@ const Home = () => {
             <MarqueeBanner />
 
             <section className="hero">
-                <motion.div className="hero-content" variants={itemVariants}>
-                    <EditableText
-                        configKey="welcomeTitle"
-                        tag="h2"
-                        className="fade-in"
-                        renderValue={(val) => {
-                            const words = (val || "").split(' ');
-                            if (words.length > 1) {
-                                return (
-                                    <>
-                                        <span>{words[0]}</span> {words.slice(1).join(' ')}
-                                    </>
-                                );
-                            }
-                            return val;
-                        }}
-                    />
-                    <EditableText
-                        configKey="welcomeSubtitle"
-                        tag="p"
-                        className="fade-in-delay"
-                    />
-                    <motion.div className="hero-actions" variants={itemVariants}>
-                        <EditableButton
-                            configKey="heroBtn1"
-                            defaultText="Ver la Carta"
-                            defaultLink="/menu"
-                            className="btn-primary"
-                        />
-                        <EditableButton
-                            configKey="heroBtn2"
-                            defaultText="Reservar Mesa"
-                            defaultLink="/reservations"
-                            className="btn-secondary"
-                        />
-                    </motion.div>
-                </motion.div>
+                <div className="hero-left">
+                    <div className="hero-carousel" style={{ position: 'relative', height: '100%', width: '100%' }}>
+                        {carouselImages.map((img, idx) => (
+                            <motion.img
+                                key={idx}
+                                src={img}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: idx === currentSlide ? 1 : 0 }}
+                                transition={{ duration: 1 }}
+                                style={{
+                                    position: 'absolute',
+                                    inset: 0,
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover'
+                                }}
+                                alt="El Jardín"
+                            />
+                        ))}
+                    </div>
+                </div>
 
-                <motion.div
-                    className="hero-image-container"
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                >
-                    <EditableImage
-                        configKey="heroImage"
-                        defaultSrc="/images/jardin-hero.png"
-                        alt="El Jardín de Arturo Soria Interior"
-                        className="hero-image"
-                    />
+                <div className="hero-right">
+                    <div className="hero-content-inner">
+                        <motion.h1 className="hero-title-main" variants={itemVariants}>
+                            El Jardín de Arturo Soria
+                        </motion.h1>
+
+                        <motion.div className="benedetti-quote" variants={itemVariants}>
+                            <p>“El alma no crece en los árboles;<br />
+                                sin embargo, se nutre de nuestro entorno,<br />
+                                como el cuerpo de la comida.<br />
+                                El alma necesita ser alimentada<br />
+                                con visiones hermosas,<br />
+                                palabras que llenen…<br />
+                                o por quién sabe besar el alma.”</p>
+                        </motion.div>
+
+                        <motion.p className="benedetti-author" variants={itemVariants}>
+                            MARIO BENEDETTI
+                        </motion.p>
+
+                        <motion.div className="hero-actions" variants={itemVariants} style={{ marginTop: '3rem', display: 'flex', gap: '1.5rem', justifyContent: 'center' }}>
+                            <Link to="/menu" className="btn-primary">Ver la Carta</Link>
+                            <Link to="/reservations" className="btn-secondary">Reservar Mesa</Link>
+                        </motion.div>
+                    </div>
+
                     <motion.div
                         className="hero-badge"
                         initial={{ rotate: 0, scale: 0 }}
@@ -130,7 +139,7 @@ const Home = () => {
                         <span>NEW</span>
                         <strong>OPEN!</strong>
                     </motion.div>
-                </motion.div>
+                </div>
             </section>
 
             <motion.section
@@ -139,20 +148,21 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
+                style={{ padding: '4rem 2rem' }}
             >
                 <div className="faq-grid">
                     <div className="faq-header">
                         <h2>FAQ'S</h2>
                         <p>Sabemos que tienes dudas, y como no nos gusta dejarte en visto, aquí van las respuestas. Léelas, asimílalas y si todavía te queda alguna, pregúntanos sin miedo.</p>
                     </div>
-                    <div className="faq-list">
+                    <div className="faq-list" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         {faqs.map((faq, index) => (
                             <motion.div
                                 key={index}
                                 className={`faq-item ${activeFaq === index ? 'active' : ''}`}
                                 variants={itemVariants}
                             >
-                                <button className="faq-question" onClick={() => toggleFaq(index)}>
+                                <button className="faq-question" onClick={() => toggleFaq(index)} style={{ width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', padding: '1rem 0', textAlign: 'left' }}>
                                     {faq.question}
                                     <Plus className="faq-icon" size={24} />
                                 </button>
@@ -164,8 +174,9 @@ const Home = () => {
                                             animate={{ height: "auto", opacity: 1 }}
                                             exit={{ height: 0, opacity: 0 }}
                                             transition={{ duration: 0.3 }}
+                                            style={{ overflow: 'hidden' }}
                                         >
-                                            <p>{faq.answer}</p>
+                                            <p style={{ paddingBottom: '1rem', color: 'var(--text-muted)' }}>{faq.answer}</p>
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
@@ -179,4 +190,3 @@ const Home = () => {
 };
 
 export default Home;
-

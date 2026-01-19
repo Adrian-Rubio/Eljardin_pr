@@ -145,6 +145,30 @@ nav {
     width: 100%;
 }
 
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.btn-reserve {
+    background-color: var(--secondary);
+    color: white !important;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border: 1px solid var(--secondary);
+}
+
+.btn-reserve:hover {
+    background-color: transparent;
+    color: var(--secondary) !important;
+}
+
 /* Editable Components */
 .editable-input,
 .editable-textarea {
@@ -358,74 +382,116 @@ h3 {
 
 /* Home Page */
 .hero {
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    gap: 4rem;
-    min-height: calc(100vh - 120px);
-    align-items: center;
-}
-
-.hero h2 {
-    font-size: clamp(2rem, 4.5vw, 3.8rem);
-    line-height: 1.05;
-    margin-bottom: 1.5rem;
-    letter-spacing: -2px;
-    color: var(--secondary);
-    font-weight: 900;
-}
-
-.hero h2 span {
-    color: var(--primary);
-}
-
-.hero-emphasis {
-    color: var(--primary);
-    display: block;
-}
-
-.hero p {
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    margin-bottom: 2.5rem;
-    max-width: 550px;
-    line-height: 1.7;
-    font-weight: 500;
-}
-
-.hero-actions {
     display: flex;
-    gap: 1.5rem;
+    flex-direction: row;
+    min-height: calc(100vh - 120px);
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    padding: 0;
+    overflow: hidden;
 }
 
-.hero-image-container {
+.hero-left {
+    flex: 1;
+    height: 100%;
     position: relative;
-    height: 500px;
+    overflow: hidden;
 }
 
-@media (max-width: 768px) {
-    .hero-image-container {
-        height: 400px;
-    }
+.hero-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem;
+    background-color: white;
+    background-image: url('/images/floral-bg.png'); /* We will create this or use a placeholder */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    text-align: center;
 }
 
-.hero-image {
+.hero-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.85); /* Frosty effect over floral */
+    z-index: 1;
+}
+
+.hero-content-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+}
+
+.hero-title-main {
+    font-family: var(--font-primary);
+    font-size: 3.5rem;
+    color: var(--primary);
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+.benedetti-quote {
+    font-family: var(--font-primary);
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: var(--text);
+    font-style: italic;
+    margin-bottom: 2rem;
+}
+
+.benedetti-author {
+    font-family: var(--font-secondary);
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--text-muted);
+}
+
+.hero-carousel {
+    height: 100%;
+    width: 100%;
+}
+
+.hero-carousel img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 30%;
-    /* Shifting focus upwards */
-    border-radius: var(--radius);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 968px) {
+    .hero {
+        flex-direction: column;
+    }
+
+    .hero-left, .hero-right {
+        flex: none;
+        width: 100%;
+        height: 50vh;
+    }
+
+    .hero-right {
+        padding: 2rem;
+    }
+
+    .hero-title-main {
+        font-size: 2.5rem;
+    }
 }
 
 .hero-badge {
     position: absolute;
-    top: -30px;
-    right: -30px;
+    top: 20px;
+    right: 20px;
     background: var(--text);
     color: white;
-    width: 160px;
-    height: 160px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     display: flex;
     flex-direction: column;
@@ -435,6 +501,7 @@ h3 {
     transform: rotate(15deg);
     font-family: var(--font-bold);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    z-index: 10;
 }
 
 /* Menu Page */

@@ -9,46 +9,37 @@ const Navbar = () => {
     const toggleMenu = () => setIsOpen(!isOpen);
 
     const links = [
-        { name: 'Inicio', path: '/' },
-        { name: 'Nuestra Carta', path: '/menu' },
-        { name: 'Reservaciones', path: '/reservations' },
-        { name: 'Eventos Privados', path: '/events' },
-        { name: 'El Jardín', path: '/jardin-experience' },
+        { name: 'EL JARDÍN DE ARTURO SORIA', path: '/' },
+        { name: 'CARTAS', path: '/menu' },
+        { name: 'EVENTOS', path: '/events' },
+        { name: 'PRENSA', path: '/press' },
     ];
 
     return (
         <nav className="navbar">
             <div className="nav-logo">
-                <Link to="/" onClick={() => setIsOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}>
-                    <span style={{
-                        fontFamily: 'var(--font-primary)',
-                        fontSize: '1.5rem',
-                        fontWeight: '700',
-                        color: 'var(--primary)',
-                        letterSpacing: '1px'
-                    }}>
-                        EL JARDÍN
-                    </span>
-                    <span style={{
-                        fontSize: '0.7rem',
-                        fontWeight: '400',
-                        color: 'var(--text-muted)',
-                        letterSpacing: '3px',
-                        marginTop: '4px'
-                    }}>
-                        DE ARTURO SORIA
-                    </span>
+                <Link to="/" onClick={() => setIsOpen(false)}>
+                    <img
+                        src="/images/logo_jardin.png"
+                        alt="El Jardín de Arturo Soria"
+                        style={{ height: '70px', width: 'auto' }}
+                    />
                 </Link>
             </div>
 
-            {/* Desktop Links */}
-            <ul className="nav-links desktop-only">
-                {links.map(link => (
-                    <li key={link.path}>
-                        <Link to={link.path}>{link.name}</Link>
-                    </li>
-                ))}
-            </ul>
+            {/* Desktop Links & Reserve */}
+            <div className="nav-right desktop-only">
+                <ul className="nav-links">
+                    {links.map(link => (
+                        <li key={link.path}>
+                            <Link to={link.path}>{link.name}</Link>
+                        </li>
+                    ))}
+                </ul>
+                <Link to="/reservations" className="btn-reserve">
+                    RESERVAR
+                </Link>
+            </div>
 
             {/* Mobile Toggle */}
             <button className="mobile-toggle" onClick={toggleMenu}>
@@ -73,6 +64,16 @@ const Navbar = () => {
                                     </Link>
                                 </li>
                             ))}
+                            <li>
+                                <Link
+                                    to="/reservations"
+                                    className="btn-reserve"
+                                    onClick={() => setIsOpen(false)}
+                                    style={{ textAlign: 'center', marginTop: '1rem' }}
+                                >
+                                    RESERVAR
+                                </Link>
+                            </li>
                         </ul>
                     </motion.div>
                 )}
