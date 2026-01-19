@@ -10,7 +10,7 @@ const Footer = () => {
         <footer className="glass-card" style={{ marginTop: '5rem', borderRadius: 'var(--radius) var(--radius) 0 0', padding: '4rem 2rem' }}>
             <div style={{ maxWidth: 'var(--max-width)', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '3rem' }}>
                 <div className="footer-brand">
-                    <img src="/images/logo_jardin.png" alt="El Jardín Logo" style={{ height: '70px', marginBottom: '1.5rem', width: 'auto' }} />
+                    <img src="/images/logo_jardin.png" alt="El Jardín Logo" style={{ height: '90px', marginBottom: '1.5rem', width: 'auto' }} />
                     <p style={{ color: 'var(--text-muted)', maxWidth: '300px' }}>
                         Un oasis gastronómico en Arturo Soria. Sabores tradicionales con un toque contemporáneo.
                     </p>

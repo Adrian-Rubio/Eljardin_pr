@@ -68,13 +68,7 @@ const Home = () => {
                 <div className="identity-right">
                     <h2 className="section-title">El Jardín de Arturo Soria</h2>
                     <div className="benedetti-quote">
-                        <p>“El alma no crece en los árboles;<br />
-                            sin embargo, se nutre de nuestro entorno,<br />
-                            como el cuerpo de la comida.<br />
-                            El alma necesita ser alimentada<br />
-                            con visiones hermosas,<br />
-                            palabras que llenen…<br />
-                            o por quién sabe besar el alma.”</p>
+                        <p>“El alma no crece en los árboles; sin embargo, se nutre de nuestro entorno, como el cuerpo de la comida. El alma necesita ser alimentada con visiones hermosas, palabras que llenen… o por quién sabe besar el alma.”</p>
                     </div>
                     <p className="benedetti-author">MARIO BENEDETTI</p>
                 </div>

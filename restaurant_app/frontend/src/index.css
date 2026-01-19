@@ -12,7 +12,7 @@
     font-style: normal;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
 
 :root {
     /* Premium Botanical Palette - Refined */
@@ -54,9 +54,16 @@
 body {
     font-family: var(--font-secondary);
     background-color: var(--background);
+    background-image: url('/images/floral-bg.png');
+    background-size: 600px;
+    background-repeat: repeat;
+    background-attachment: fixed;
     color: var(--text);
-    line-height: 1.6;
+    line-height: 1.8;
+    /* Slightly more breathing room */
     font-size: var(--base-font-size);
+    font-weight: 300;
+    /* Pier Sans light weight effect */
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
 }
@@ -106,10 +113,13 @@ nav {
 .nav-links a {
     text-decoration: none;
     color: var(--text);
-    font-size: 11px;
-    font-weight: 400;
+    font-size: 9.5px;
+    /* Even smaller for extreme elegance */
+    font-weight: 200;
+    /* Super thin weight */
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.35em;
+    /* Increased tracking */
     transition: opacity 0.3s ease;
     padding: 5px 0;
 }
@@ -163,8 +173,14 @@ nav {
 }
 
 .navbar-logo-img {
-    height: 70px;
+    height: 110px;
+    /* Increased as requested */
     width: auto;
+    transition: transform 0.3s ease;
+}
+
+.navbar-logo-img:hover {
+    transform: scale(1.05);
 }
 
 /* Editable Components */
@@ -443,34 +459,49 @@ h3 {
 }
 
 .identity-right {
-    text-align: left;
-    padding-left: 60px;
+    text-align: center;
+    padding: 0 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .section-title {
     font-family: var(--font-primary);
-    font-size: 3rem;
+    font-size: 2rem;
+    /* Slightly smaller for balance */
     color: var(--primary);
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
     line-height: 1.2;
+    font-weight: 400;
+    text-transform: none;
+    /* Keep it natural */
 }
 
 .benedetti-quote {
-    font-family: var(--font-primary);
-    font-size: 1.3rem;
-    line-height: 1.6;
+    font-family: var(--font-secondary);
+    font-size: 13px;
+    /* Smaller as requested */
+    line-height: 2.2;
+    /* Spaced out for readability */
     color: var(--text);
-    font-style: italic;
-    margin-bottom: 2rem;
-    opacity: 0.9;
+    margin: 0 auto 2.5rem;
+    max-width: 480px;
+    font-weight: 200;
+    /* Super thin */
+    text-align: center;
 }
 
 .benedetti-author {
     font-family: var(--font-secondary);
-    font-size: 10px;
-    letter-spacing: 0.3em;
+    font-size: 8.5px;
+    /* Discrete */
+    letter-spacing: 0.5em;
+    /* High tracking */
     text-transform: uppercase;
     color: var(--text-muted);
+    font-weight: 300;
 }
 
 /* Video Section */
