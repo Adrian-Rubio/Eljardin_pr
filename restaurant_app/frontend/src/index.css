@@ -419,18 +419,18 @@ h3 {
 .dish-gallery-slider {
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding: 80px 2rem;
-    max-width: 1400px;
-    /* Increased for larger images */
+    gap: 15px;
+    /* Tighter gap like in the screenshot */
+    padding: 100px 1rem;
+    max-width: 1600px;
+    /* Much larger as requested */
     margin: 0 auto;
 }
 
 .dish-gallery {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
-    /* Slightly more balanced gap */
+    gap: 15px;
     flex: 1;
     overflow: hidden;
 }
@@ -461,11 +461,13 @@ h3 {
 }
 
 .gallery-item {
-    aspect-ratio: 1/1;
+    aspect-ratio: 3/2;
+    /* Rectangular landscape like the screenshot */
     overflow: hidden;
     border: 1px solid rgba(0, 0, 0, 0.15);
     /* Subtle dark border for definition */
     background: white;
+    transition: transform 0.5s ease;
 }
 
 .gallery-item img {
