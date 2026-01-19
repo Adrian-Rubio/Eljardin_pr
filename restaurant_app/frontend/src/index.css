@@ -164,6 +164,8 @@
     --footer-bg: #2d2d2d;
     /* Dark anthracite from reference */
     --footer-text: #e0e0e0;
+    --provincial-pink: #fdf2f0;
+    /* Soft highlight for editor */
 
     /* Brand Mapping */
     --primary: var(--forest-green);
@@ -724,10 +726,12 @@ h3 {
 .video-container {
     position: relative;
     width: 100%;
-    max-width: 900px;
+    max-width: 1000px;
     margin: 4rem auto 0;
     aspect-ratio: 16/9;
     overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 
 .play-button {
@@ -767,10 +771,11 @@ h3 {
 }
 
 .text-block-centered h2 {
-    color: var(--secondary);
-    font-size: 2rem;
+    color: var(--forest-green);
+    font-size: 2.5rem;
     margin-bottom: 2.5rem;
     font-family: var(--font-primary);
+    font-weight: 400;
 }
 
 .text-block-centered p {

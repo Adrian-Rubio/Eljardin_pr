@@ -143,12 +143,18 @@ const Home = () => {
 
             {/* 4. VIDEO SECTION */}
             <section className="video-section">
-                <h2 className="section-title" style={{ fontSize: '2.5rem' }}>
-                    Descubre un día en<br />
-                    El Jardín de Arturo Soria
-                </h2>
+                <EditableText
+                    configKey="video_title"
+                    tag="h2"
+                    className="section-title"
+                    style={{ fontSize: '2.5rem' }}
+                    renderValue={(val) => val || "Descubre un día en\nEl Jardín de Arturo Soria"}
+                />
                 <div className="video-container">
-                    <div className="play-button">
+                    {/* Placeholder for real video, styled better */}
+                    <div className="video-overlay" style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.1)', zIndex: 1 }}></div>
+                    <img src="/images/imagenes%20genéricas/JAS-111.jpg" alt="Video Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div className="play-button" onClick={() => window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')}>
                         <div className="play-icon"></div>
                     </div>
                 </div>
@@ -156,19 +162,24 @@ const Home = () => {
 
             {/* 5. TEXT BLOCK */}
             <section className="text-block-centered">
-                <h2>Un Jardín oculto dentro de Madrid</h2>
-                <p>
-                    A través de una cocina tradicional y respetando nuestras raíces, trabajamos sobre un único objetivo: sorprender a tu paladar con los mejores productos y técnicas culinarias.
-                    En El Jardín de Arturo Soria descubrirás un rincón dentro del corazón de Madrid que no te dejará indiferente. Salones privados, terrazas techadas, espacios Chill-out y nuestro increíble y mágico Jardín...
-                </p>
+                <EditableText
+                    configKey="garden_text_title"
+                    tag="h2"
+                    renderValue={(val) => val || "Un Jardín oculto dentro de Madrid"}
+                />
+                <EditableText
+                    configKey="garden_text_p"
+                    tag="p"
+                    renderValue={(val) => val || "A través de una cocina tradicional y respetando nuestras raíces, trabajamos sobre un único objetivo: sorprender a tu paladar con los mejores productos y técnicas culinarias.\nEn El Jardín de Arturo Soria descubrirás un rincón dentro del corazón de Madrid que no te dejará indiferente. Salones privados, terrazas techadas, espacios Chill-out y nuestro increíble y mágico Jardín..."}
+                />
             </section>
 
             {/* FAQ Section */}
             <section className="faq-section" style={{ padding: '4rem 2rem' }}>
                 <div className="faq-grid">
                     <div className="faq-header">
-                        <h2>FAQ'S</h2>
-                        <p>Respuestas a tus dudas más comunes.</p>
+                        <EditableText configKey="faq_title" tag="h2" renderValue={(val) => val || "FAQ'S"} />
+                        <EditableText configKey="faq_subtitle" tag="p" renderValue={(val) => val || "Respuestas a tus dudas más comunes."} />
                     </div>
                     <div className="faq-list">
                         {faqs.map((faq, index) => (

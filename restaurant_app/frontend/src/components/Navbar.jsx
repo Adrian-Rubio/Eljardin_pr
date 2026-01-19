@@ -4,7 +4,10 @@ import { Menu, X, Instagram, Facebook } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
+    const [isOpen, setIsOpen] = useState(false);
     const [isCartasOpen, setIsCartasOpen] = useState(false);
+
+    const toggleMenu = () => setIsOpen(!isOpen);
 
     const links = [
         { name: 'EL JARDÍN DE ARTURO SORIA', path: '/' },
