@@ -19,46 +19,47 @@ const MenuCard = ({ item, formatPrice, ALLERGEN_ICONS, hideImage }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             style={{
-                padding: '20px 0',
-                borderBottom: '1px solid rgba(0,0,0,0.05)',
+                padding: '24px 0',
+                borderBottom: '1px solid #eee', // Cleaner thin line
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '8px'
+                gap: '4px'
             }}
         >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <h3 style={{
-                    fontSize: '1.2rem',
-                    fontFamily: 'var(--font-secondary)',
-                    fontWeight: '500',
-                    letterSpacing: '0.05em',
-                    textTransform: 'uppercase',
+                    fontSize: '1.25rem',
+                    fontFamily: 'var(--font-primary)',
+                    fontWeight: '600',
+                    color: '#333',
                     margin: 0
                 }}>
                     {item.name}
                 </h3>
-                <span className="price-tag" style={{ fontSize: '1.1rem', fontWeight: '500', color: 'var(--primary)' }}>
+                <span className="price-tag" style={{ fontSize: '1.1rem', fontWeight: '500', color: '#333' }}>
                     {safeVariants.length > 0 ? formatPrice(safeVariants[0].price) : formatPrice(item.base_price)}
                 </span>
             </div>
 
-            <p style={{
-                fontSize: '13px',
-                color: 'var(--text-muted)',
-                lineHeight: '1.6',
-                margin: '5px 0',
-                maxWidth: '90%'
-            }}>
-                {item.description}
-            </p>
+            {item.description && (
+                <p style={{
+                    fontSize: '14px',
+                    color: '#888',
+                    lineHeight: '1.5',
+                    margin: '4px 0',
+                    maxWidth: '85%'
+                }}>
+                    {item.description}
+                </p>
+            )}
 
-            <div style={{ display: 'flex', gap: '8px', marginTop: '5px' }}>
+            <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
                 {safeAllergens.map((alg, idx) => (
                     <img
                         key={idx}
                         src={ALLERGEN_ICONS[alg] || '/icons/default.png'}
                         alt={alg}
-                        style={{ height: '18px', opacity: 0.6 }}
+                        style={{ height: '22px', width: '22px', objectFit: 'contain' }}
                         title={alg}
                     />
                 ))}

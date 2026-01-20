@@ -130,7 +130,7 @@ const Menu = () => {
                     tag="h1"
                     className="menu-title-large"
                     style={{ fontSize: '3.5rem', fontFamily: 'var(--font-primary)', fontWeight: '400' }}
-                    renderValue={(val) => val || (type === 'vinos' ? 'Bodega El Jardín' : type === 'cocteles' ? 'Mixología' : 'La Carta')}
+                    renderValue={(val) => val || (type === 'vinos' ? 'Nuestros Vinos' : type === 'cocteles' ? 'Carta espirituosos' : 'Nuestra carta')}
                 />
                 <div style={{ maxWidth: '600px', margin: '0 auto', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '30px' }}>
                     <EditableText
@@ -142,58 +142,75 @@ const Menu = () => {
                 </div>
             </div>
 
-            <div className="category-tabs" style={{ display: 'flex', justifyContent: 'center', gap: '30px', margin: '40px 0', borderBottom: '1px solid #eee', paddingBottom: '20px' }}>
-                {categories.map(cat => (
-                    <button
-                        key={cat}
-                        className={activeCategory === cat ? 'active' : ''}
-                        onClick={() => setActiveCategory(cat)}
-                        style={{
-                            background: 'none',
-                            border: 'none',
-                            fontSize: '11px',
-                            letterSpacing: '0.2em',
-                            textTransform: 'uppercase',
-                            cursor: 'pointer',
-                            color: activeCategory === cat ? 'var(--primary)' : '#999',
-                            fontWeight: activeCategory === cat ? '600' : '400',
-                            transition: 'all 0.3s'
-                        }}
-                    >
-                        {cat}
-                    </button>
-                ))}
-            </div>
+            <div className="menu-container-sections" style={{ maxWidth: '1000px', margin: '0 auto', padding: '0 20px 80px' }}>
+                {categories.map((cat, index) => {
+                    const isOpen = activeCategory === cat;
+                    const catItems = filteredItems.filter(item => (item.category || "VARIOS").trim().toUpperCase() === cat.toUpperCase());
 
-            <AnimatePresence mode="wait">
-                <motion.div
-                    key={`${type}-${activeCategory}`}
-                    className="menu-grid"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.4 }}
-                    style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-                        gap: '40px',
-                        maxWidth: '1200px',
-                        margin: '0 auto'
-                    }}
-                >
-                    {filteredItems
-                        .filter(item => (item.category || "VARIOS").trim().toUpperCase() === activeCategory.toUpperCase())
-                        .map(item => (
-                            <MenuCard
-                                key={item.id}
-                                item={item}
-                                formatPrice={formatPrice}
-                                ALLERGEN_ICONS={ALLERGEN_ICONS}
-                                hideImage={true} // Premium look without images
-                            />
-                        ))}
-                </motion.div>
-            </AnimatePresence>
+                    if (catItems.length === 0) return null;
+
+                    return (
+                        <div key={cat} className="menu-category-section" style={{ marginBottom: '2px' }}>
+                            <button
+                                onClick={() => setActiveCategory(isOpen ? '' : cat)}
+                                style={{
+                                    width: '100%',
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    padding: '16px 24px',
+                                    backgroundColor: '#8c8c88', // Grey bar from image
+                                    color: 'white',
+                                    border: 'none',
+                                    cursor: 'pointer',
+                                    textAlign: 'left',
+                                    transition: 'background-color 0.3s'
+                                }}
+                            >
+                                <h2 style={{
+                                    margin: 0,
+                                    fontSize: '1.2rem',
+                                    fontWeight: '500',
+                                    fontFamily: 'var(--font-primary)',
+                                    textTransform: 'capitalize'
+                                }}>
+                                    {cat.toLowerCase()}
+                                </h2>
+                                <motion.span
+                                    animate={{ rotate: isOpen ? 180 : 0 }}
+                                    style={{ fontSize: '1.2rem', display: 'flex', alignItems: 'center' }}
+                                >
+                                    ▼
+                                </motion.span>
+                            </button>
+
+                            <AnimatePresence>
+                                {isOpen && (
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: 'auto', opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                        style={{ overflow: 'hidden' }}
+                                    >
+                                        <div className="category-items" style={{ padding: '20px 0' }}>
+                                            {catItems.map(item => (
+                                                <MenuCard
+                                                    key={item.id}
+                                                    item={item}
+                                                    formatPrice={formatPrice}
+                                                    ALLERGEN_ICONS={ALLERGEN_ICONS}
+                                                    hideImage={true}
+                                                />
+                                            ))}
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 };
