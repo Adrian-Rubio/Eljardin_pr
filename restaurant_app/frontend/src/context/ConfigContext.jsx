@@ -2,7 +2,8 @@ import React, { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
 // API URL definition with fallback to local server IP for the restaurant app
-const API_URL = import.meta.env.VITE_API_URL || 'http://192.168.0.221:8000';
+// API URL definition with dynamic fallback
+const API_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:8000`;
 
 const ConfigContext = createContext();
 

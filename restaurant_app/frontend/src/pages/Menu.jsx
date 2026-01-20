@@ -5,7 +5,7 @@ import EditableText from '../components/Editable/EditableText';
 import { motion, AnimatePresence } from 'framer-motion';
 import MenuCard from '../components/MenuCard';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://192.168.0.221:8000';
+const API_URL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:8000`;
 
 const ALLERGEN_ICONS = {
     "Gluten": "/icons/simbolo-alergeno-cereales.png",
