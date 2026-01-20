@@ -10,7 +10,7 @@ router = APIRouter(
     tags=["menu"]
 )
 
-@router.get("/", response_model=List[schemas.MenuItem])
+@router.get("", response_model=List[schemas.MenuItem])
 def get_menu(db: Session = Depends(get_db)):
     """
     Retrieves all active menu items.

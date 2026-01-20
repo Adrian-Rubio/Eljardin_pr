@@ -3,7 +3,7 @@ from typing import List, Optional, Any
 
 class MenuItemBase(BaseModel):
     name: str
-    description: str
+    description: Optional[str] = None
     base_price: float
     category: str
     image_url: Optional[str] = None

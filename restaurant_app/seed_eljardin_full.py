@@ -1,6 +1,6 @@
 import sys
 import os
-import json
+# import json # Not needed for JSON dumping anymore
 
 # Add backend to sys.path (Dynamic path for Windows/Linux compatibility)
 sys.path.append(os.path.join(os.getcwd(), 'backend'))
@@ -27,54 +27,54 @@ def seed_full_menu():
     db.query(models.MenuItem).delete()
     db.commit()
 
-    # Helper for price variants (Glass vs Bottle)
+    # Helper for price variants (Glass vs Bottle) - Returns LIST (Python Object), not JSON string
     def variants(copa=None, botella=None):
         v = []
         if copa: v.append({"name": "Copa", "price": copa})
         if botella: v.append({"name": "Botella", "price": botella})
-        return json.dumps(v)
+        return v
 
     menu_items = []
 
     # --- CARTA PRINCIPAL ---
     # Bocados para empezar
-    menu_items.append({"name": "Croquetas de Jamón Ibérico", "description": "Croquetas cremosas de jamón ibérico rebozadas en panko (7 ud).", "base_price": 15.50, "category": "Bocados para empezar", "allergens": json.dumps(["Lácteos", "Huevos"]), "type": "carta"})
-    menu_items.append({"name": "Burrata al pesto con fruta de temporada", "description": "Ensalada de burrata con tomate rosa, higos y fresas, aliñada con salsa de pesto y vinagre balsámico.", "base_price": 22.00, "category": "Bocados para empezar", "allergens": json.dumps(["Dióxido de Azufre y Sulfitos", "Lácteos", "Frutos de Cáscara"]), "type": "carta"})
-    menu_items.append({"name": "Revuelto de Boletus y Foie", "description": "Revuelto de boletus guisado con cebolla caramelizada y escalope de foie.", "base_price": 24.95, "category": "Bocados para empezar", "allergens": json.dumps(["Huevos"]), "type": "carta"})
-    menu_items.append({"name": "Ensaladilla rusa con ventresca", "description": "Ensaladilla rusa casera con vinagreta de piparra, esferificación de aceituna negra y verde, piparra laminada, polvo de aceituna negra, ventresca de atún y tosta de pan cristal. (Opción sin gluten)", "base_price": 16.00, "category": "Bocados para empezar", "allergens": json.dumps(["Huevos", "Pescado"]), "type": "carta"})
-    menu_items.append({"name": "Jamón Ibérico", "description": "Jamón ibérico Reserva de la Familia de Julián Martín, acompañado de picos de pan.", "base_price": 33.00, "category": "Bocados para empezar", "allergens": json.dumps([]), "type": "carta"})
-    menu_items.append({"name": "Torreznos de Soria con patata revolcona", "description": "Torreznos de Soria horneados, acompañados de patata revolcona, con pimentón dulce de La Vera ahumado, sal de chistorra asada, aceite de pimentón y pimientos de padrón fritos.", "base_price": 14.00, "category": "Bocados para empezar", "allergens": json.dumps([]), "type": "carta"})
-    menu_items.append({"name": "Sobao con anchoa ahumada", "description": "Sobao Pasiego casero acompañado con crema de queso cabrales y coronado con una anchoa del Cantábrico ahumada (2 ud).", "base_price": 12.95, "category": "Bocados para empezar", "allergens": json.dumps(["Lácteos", "Pescado"]), "type": "carta"})
-    menu_items.append({"name": "Pan y Aperitivo", "description": "", "base_price": 2.25, "category": "Bocados para empezar", "allergens": json.dumps([]), "type": "carta"})
+    menu_items.append({"name": "Croquetas de Jamón Ibérico", "description": "Croquetas cremosas de jamón ibérico rebozadas en panko (7 ud).", "base_price": 15.50, "category": "Bocados para empezar", "allergens": ["Lácteos", "Huevos"], "type": "carta"})
+    menu_items.append({"name": "Burrata al pesto con fruta de temporada", "description": "Ensalada de burrata con tomate rosa, higos y fresas, aliñada con salsa de pesto y vinagre balsámico.", "base_price": 22.00, "category": "Bocados para empezar", "allergens": ["Dióxido de Azufre y Sulfitos", "Lácteos", "Frutos de Cáscara"], "type": "carta"})
+    menu_items.append({"name": "Revuelto de Boletus y Foie", "description": "Revuelto de boletus guisado con cebolla caramelizada y escalope de foie.", "base_price": 24.95, "category": "Bocados para empezar", "allergens": ["Huevos"], "type": "carta"})
+    menu_items.append({"name": "Ensaladilla rusa con ventresca", "description": "Ensaladilla rusa casera con vinagreta de piparra, esferificación de aceituna negra y verde, piparra laminada, polvo de aceituna negra, ventresca de atún y tosta de pan cristal. (Opción sin gluten)", "base_price": 16.00, "category": "Bocados para empezar", "allergens": ["Huevos", "Pescado"], "type": "carta"})
+    menu_items.append({"name": "Jamón Ibérico", "description": "Jamón ibérico Reserva de la Familia de Julián Martín, acompañado de picos de pan.", "base_price": 33.00, "category": "Bocados para empezar", "allergens": [], "type": "carta"})
+    menu_items.append({"name": "Torreznos de Soria con patata revolcona", "description": "Torreznos de Soria horneados, acompañados de patata revolcona, con pimentón dulce de La Vera ahumado, sal de chistorra asada, aceite de pimentón y pimientos de padrón fritos.", "base_price": 14.00, "category": "Bocados para empezar", "allergens": [], "type": "carta"})
+    menu_items.append({"name": "Sobao con anchoa ahumada", "description": "Sobao Pasiego casero acompañado con crema de queso cabrales y coronado con una anchoa del Cantábrico ahumada (2 ud).", "base_price": 12.95, "category": "Bocados para empezar", "allergens": ["Lácteos", "Pescado"], "type": "carta"})
+    menu_items.append({"name": "Pan y Aperitivo", "description": "", "base_price": 2.25, "category": "Bocados para empezar", "allergens": [], "type": "carta"})
 
     # Arroces
-    menu_items.append({"name": "Arroz al horno con carrillera", "description": "Para 2 personas. Precio por persona. Arroz “Molino Roca” cocinado en llauna con carrillera guisada, pimientos de padrón, trompeta de la muerte, alioli de ajo asado y salsa demiglace.", "base_price": 24.00, "category": "Nuestros arroces para compartir", "allergens": json.dumps(["Dióxido de Azufre y Sulfitos", "Huevos", "Apio"]), "type": "carta"})
-    menu_items.append({"name": "Arroz meloso con bogavante", "description": "Para dos personas, Precio por persona. Arroz “Molino Roca” cocinado en salsa americana y con un bogavante por arroz.", "base_price": 35.00, "category": "Nuestros arroces para compartir", "allergens": json.dumps(["Dióxido de Azufre y Sulfitos", "Pescado", "Apio", "Crustáceos", "Moluscos"]), "type": "carta"})
+    menu_items.append({"name": "Arroz al horno con carrillera", "description": "Para 2 personas. Precio por persona. Arroz “Molino Roca” cocinado en llauna con carrillera guisada, pimientos de padrón, trompeta de la muerte, alioli de ajo asado y salsa demiglace.", "base_price": 24.00, "category": "Nuestros arroces para compartir", "allergens": ["Dióxido de Azufre y Sulfitos", "Huevos", "Apio"], "type": "carta"})
+    menu_items.append({"name": "Arroz meloso con bogavante", "description": "Para dos personas, Precio por persona. Arroz “Molino Roca” cocinado en salsa americana y con un bogavante por arroz.", "base_price": 35.00, "category": "Nuestros arroces para compartir", "allergens": ["Dióxido de Azufre y Sulfitos", "Pescado", "Apio", "Crustáceos", "Moluscos"], "type": "carta"})
 
     # Carnes
-    menu_items.append({"name": "Lagarto Ibérico al Pedro Ximénez", "description": "Lagarto ibérico a la brasa glaseado con una reducción de Pedro Ximénez sobre una base de espuma de patata, milhojas de patata y brotes de temporada.", "base_price": 25.00, "category": "Alma Carnívora", "allergens": json.dumps(["Dióxido de Azufre y Sulfitos", "Lácteos"]), "type": "carta"})
-    menu_items.append({"name": "Chuletón a la brasa", "description": "Chuletón de alta maduración, 45 días, cocinado a la brasa de carbón leña y sal Maldon.", "base_price": 95.00, "category": "Alma Carnívora", "allergens": json.dumps([]), "type": "carta"})
-    menu_items.append({"name": "Lomo de vaca a la pimienta", "description": "Lomo bajo a la brasa de carbón leña napado con salsa pimienta y acompañado de patatas fritas.", "base_price": 27.00, "category": "Alma Carnívora", "allergens": json.dumps(["Lácteos"]), "type": "carta"})
-    menu_items.append({"name": "Steak tartar", "description": "Steak tartar de solomillo de ternera cortado a cuchillo, preparado en mesa, con picante al gusto. (opción sin gluten).", "base_price": 28.00, "category": "Alma Carnívora", "allergens": json.dumps(["Dióxido de Azufre y Sulfitos", "Huevos", "Pescado", "Soja", "Mostaza"]), "type": "carta"})
+    menu_items.append({"name": "Lagarto Ibérico al Pedro Ximénez", "description": "Lagarto ibérico a la brasa glaseado con una reducción de Pedro Ximénez sobre una base de espuma de patata, milhojas de patata y brotes de temporada.", "base_price": 25.00, "category": "Alma Carnívora", "allergens": ["Dióxido de Azufre y Sulfitos", "Lácteos"], "type": "carta"})
+    menu_items.append({"name": "Chuletón a la brasa", "description": "Chuletón de alta maduración, 45 días, cocinado a la brasa de carbón leña y sal Maldon.", "base_price": 95.00, "category": "Alma Carnívora", "allergens": [], "type": "carta"})
+    menu_items.append({"name": "Lomo de vaca a la pimienta", "description": "Lomo bajo a la brasa de carbón leña napado con salsa pimienta y acompañado de patatas fritas.", "base_price": 27.00, "category": "Alma Carnívora", "allergens": ["Lácteos"], "type": "carta"})
+    menu_items.append({"name": "Steak tartar", "description": "Steak tartar de solomillo de ternera cortado a cuchillo, preparado en mesa, con picante al gusto. (opción sin gluten).", "base_price": 28.00, "category": "Alma Carnívora", "allergens": ["Dióxido de Azufre y Sulfitos", "Huevos", "Pescado", "Soja", "Mostaza"], "type": "carta"})
 
     # Marinera
-    menu_items.append({"name": "Merluza en salsa verde", "description": "Merluza a la brasa con salsa verde y acompañado de mini patatas asadas.", "base_price": 26.00, "category": "Alma Marinera", "allergens": json.dumps(["Pescado"]), "type": "carta"})
-    menu_items.append({"name": "Rape a la Mediterránea", "description": "Rape a la brasa acompañado de tomate cherry, albahaca, piquillos, mini patatas y tomillo.", "base_price": 29.00, "category": "Alma Marinera", "allergens": json.dumps(["Lácteos", "Pescado"]), "type": "carta"})
-    menu_items.append({"name": "Chipirones encebollados", "description": "Chipirones salteados y guisados con cebolla caramelizada y guindilla vasca.", "base_price": 29.00, "category": "Alma Marinera", "allergens": json.dumps(["Moluscos"]), "type": "carta"})
-    menu_items.append({"name": "Pulpo a la brasa", "description": "Pulpo a la brasa de carbón leña con espuma de puré de patata, pimentón dulce de la vera y AOVE.", "base_price": 28.00, "category": "Alma Marinera", "allergens": json.dumps(["Lácteos", "Moluscos"]), "type": "carta"})
-    menu_items.append({"name": "Txangurro a la Donostiarra", "description": "Centollo desmigado gratinado con crema de mariscos, cebolla caramelizada, Brandy y mantequilla. Acompañado de pan cristal.", "base_price": 26.00, "category": "Alma Marinera", "allergens": json.dumps(["Lácteos", "Crustáceos", "Moluscos"]), "type": "carta"})
+    menu_items.append({"name": "Merluza en salsa verde", "description": "Merluza a la brasa con salsa verde y acompañado de mini patatas asadas.", "base_price": 26.00, "category": "Alma Marinera", "allergens": ["Pescado"], "type": "carta"})
+    menu_items.append({"name": "Rape a la Mediterránea", "description": "Rape a la brasa acompañado de tomate cherry, albahaca, piquillos, mini patatas y tomillo.", "base_price": 29.00, "category": "Alma Marinera", "allergens": ["Lácteos", "Pescado"], "type": "carta"})
+    menu_items.append({"name": "Chipirones encebollados", "description": "Chipirones salteados y guisados con cebolla caramelizada y guindilla vasca.", "base_price": 29.00, "category": "Alma Marinera", "allergens": ["Moluscos"], "type": "carta"})
+    menu_items.append({"name": "Pulpo a la brasa", "description": "Pulpo a la brasa de carbón leña con espuma de puré de patata, pimentón dulce de la vera y AOVE.", "base_price": 28.00, "category": "Alma Marinera", "allergens": ["Lácteos", "Moluscos"], "type": "carta"})
+    menu_items.append({"name": "Txangurro a la Donostiarra", "description": "Centollo desmigado gratinado con crema de mariscos, cebolla caramelizada, Brandy y mantequilla. Acompañado de pan cristal.", "base_price": 26.00, "category": "Alma Marinera", "allergens": ["Lácteos", "Crustáceos", "Moluscos"], "type": "carta"})
 
     # Guarniciones
-    menu_items.append({"name": "Ensalada a la Donostiarra", "base_price": 4.00, "category": "Guarniciones", "allergens": json.dumps(["Dióxido de Azufre y Sulfitos"]), "type": "carta"})
+    menu_items.append({"name": "Ensalada a la Donostiarra", "base_price": 4.00, "category": "Guarniciones", "allergens": ["Dióxido de Azufre y Sulfitos"], "type": "carta"})
     menu_items.append({"name": "Patatas fritas", "base_price": 4.00, "category": "Guarniciones", "type": "carta"})
     menu_items.append({"name": "Piquillos confitados", "base_price": 6.00, "category": "Guarniciones", "type": "carta"})
     menu_items.append({"name": "Pan cristal con tomate", "base_price": 4.50, "category": "Guarniciones", "type": "carta"})
 
     # Postres
-    menu_items.append({"name": "Brownie de chocolate", "description": "Brownie de chocolate negro y mantequilla tostada acompañado de helado de caramelo salado y sal Maldon.", "base_price": 9.00, "category": "Alma Pastelera", "allergens": json.dumps(["Lácteos", "Huevos", "Frutos de Cáscara"]), "type": "carta"})
-    menu_items.append({"name": "Coulant de avellana", "description": "Coulant de avellana horneado al momento (8min), fundido por dentro, acompañado de helado de frutos rojos.", "base_price": 11.00, "category": "Alma Pastelera", "allergens": json.dumps(["Dióxido de Azufre y Sulfitos", "Lácteos", "Huevos", "Frutos de Cáscara"]), "type": "carta"})
-    menu_items.append({"name": "Milhojas de maracuyá", "description": "Milhojas con crema diplomática de maracuyá y helado de coco.", "base_price": 12.00, "category": "Alma Pastelera", "allergens": json.dumps(["Lácteos"]), "type": "carta"})
-    menu_items.append({"name": "Torrija de toffee y jengibre", "description": "Torrija en pan brioche macerada en toffee, jengibre y cítricos, acompañado de helado de café.", "base_price": 9.00, "category": "Alma Pastelera", "allergens": json.dumps(["Dióxido de Azufre y Sulfitos", "Lácteos", "Huevos", "Frutos de Cáscara"]), "type": "carta"})
+    menu_items.append({"name": "Brownie de chocolate", "description": "Brownie de chocolate negro y mantequilla tostada acompañado de helado de caramelo salado y sal Maldon.", "base_price": 9.00, "category": "Alma Pastelera", "allergens": ["Lácteos", "Huevos", "Frutos de Cáscara"], "type": "carta"})
+    menu_items.append({"name": "Coulant de avellana", "description": "Coulant de avellana horneado al momento (8min), fundido por dentro, acompañado de helado de frutos rojos.", "base_price": 11.00, "category": "Alma Pastelera", "allergens": ["Dióxido de Azufre y Sulfitos", "Lácteos", "Huevos", "Frutos de Cáscara"], "type": "carta"})
+    menu_items.append({"name": "Milhojas de maracuyá", "description": "Milhojas con crema diplomática de maracuyá y helado de coco.", "base_price": 12.00, "category": "Alma Pastelera", "allergens": ["Lácteos"], "type": "carta"})
+    menu_items.append({"name": "Torrija de toffee y jengibre", "description": "Torrija en pan brioche macerada en toffee, jengibre y cítricos, acompañado de helado de café.", "base_price": 9.00, "category": "Alma Pastelera", "allergens": ["Dióxido de Azufre y Sulfitos", "Lácteos", "Huevos", "Frutos de Cáscara"], "type": "carta"})
 
     # --- VINOS ---
     # Tintos Madrid
