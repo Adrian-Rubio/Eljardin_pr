@@ -36,8 +36,8 @@ const AdminDashboard = () => {
     });
 
     const [typographyConfig, setTypographyConfig] = useState({
-        primaryFont: siteConfig.typography?.primaryFont || "'Outfit', sans-serif",
-        secondaryFont: siteConfig.typography?.secondaryFont || "'Roboto', sans-serif",
+        primaryFont: siteConfig.typography?.primaryFont || "'Pier Sans', sans-serif",
+        secondaryFont: siteConfig.typography?.secondaryFont || "'Pier Sans', sans-serif",
         baseFontSize: siteConfig.typography?.baseFontSize || '16px'
     });
 
@@ -54,8 +54,8 @@ const AdminDashboard = () => {
             hours: siteConfig.hours || ''
         });
         setTypographyConfig({
-            primaryFont: siteConfig.typography?.primaryFont || "'Outfit', sans-serif",
-            secondaryFont: siteConfig.typography?.secondaryFont || "'Roboto', sans-serif",
+            primaryFont: siteConfig.typography?.primaryFont || "'Pier Sans', sans-serif",
+            secondaryFont: siteConfig.typography?.secondaryFont || "'Pier Sans', sans-serif",
             baseFontSize: siteConfig.typography?.baseFontSize || '16px'
         });
     }, [siteConfig]);
@@ -796,9 +796,9 @@ const AdminDashboard = () => {
                                 value={typographyConfig.primaryFont}
                                 onChange={(e) => setTypographyConfig({ ...typographyConfig, primaryFont: e.target.value })}
                             >
-                                <option value="'Druk Wide', sans-serif">Druk Wide (Personalizada)</option>
+                                <option value="'Pier Sans', sans-serif">Pier Sans (Oficial)</option>
                                 <option value="'Outfit', sans-serif">Outfit (Moderna)</option>
-                                <option value="'Playfair Display', serif">Playfair (Elegante)</option>
+                                <option value="'Playfair Display', serif">Playfair Display (Clásica)</option>
                                 <option value="'Inter', sans-serif">Inter (Limpia)</option>
                                 <option value="'Courier New', monospace">Courier (Máquina de escribir)</option>
                                 <option value="'Montserrat', sans-serif">Montserrat (Geométrica)</option>
