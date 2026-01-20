@@ -25,6 +25,7 @@ const ALLERGEN_ICONS = {
 };
 
 const PREFERRED_ORDER = [
+    // Carta
     'BOCADOS PARA EMPEZAR',
     'PAN Y APERITIVO',
     'NUESTROS ARROCES PARA COMPARTIR',
@@ -32,13 +33,34 @@ const PREFERRED_ORDER = [
     'ALMA MARINERA',
     'GUARNICIONES',
     'ALMA PASTELERA',
+    // Vinos
     'TINTOS DOP MADRID Y SIERRA DE GREDOS',
+    'TINTOS DOP RIBERA SACRA',
+    'TINTOS VT EXTREMADURA',
+    'TINTOS DOVT CÁDIZ',
+    'TINTOS DOCA PRIORAT',
     'TINTOS DOCA RIOJA',
     'DOP RIBERA DEL DUERO',
+    'TINTOS VT CASTILLA Y LEÓN',
+    'TINTOS DO SOMONTANO',
     'BLANCOS. DO RUEDA',
+    'BLANCOS VT TIERRA DE CASTILLA-LEÓN',
     'BLANCOS DO RÍAS BAIXAS',
+    'BLANCOS DO BIERZO',
+    'BLANCOS D.O. MONTERREI',
+    'BLANCOS DO RIOJA',
+    'ROSADOS VT CASTILLA-LEÓN',
+    'CAVAS Y CHAMPAGNES',
+    'VINOS GENEROSOS Y DULCES (POR COPA)',
+    // Cocteles
     'COCTELES',
-    'GIN'
+    'WHISKY',
+    'RON',
+    'VODKA',
+    'TEQUILA',
+    'GIN',
+    'VERMÚS',
+    'LICORES'
 ];
 
 const Menu = () => {
@@ -49,26 +71,27 @@ const Menu = () => {
 
     const filteredItems = useMemo(() => {
         if (!type) return items;
+        const vinosCats = [
+            'TINTOS', 'DOP RIBERA', 'BLANCOS', 'ROSADOS', 'CAVAS', 'VINOS GENEROSOS'
+        ];
+        const coctelesCats = [
+            'COCTELES', 'WHISKY', 'RON', 'VODKA', 'TEQUILA', 'GIN', 'VERMÚS', 'LICORES'
+        ];
+
         if (type === 'vinos') {
             return items.filter(item =>
-                (item.category || '').toUpperCase().includes('TINTOS') ||
-                (item.category || '').toUpperCase().includes('BLANCOS') ||
-                (item.category || '').toUpperCase().includes('CAVAS')
+                vinosCats.some(c => (item.category || '').toUpperCase().includes(c))
             );
         }
         if (type === 'cocteles') {
             return items.filter(item =>
-                (item.category || '').toUpperCase().includes('COCTELES') ||
-                (item.category || '').toUpperCase().includes('GIN') ||
-                (item.category || '').toUpperCase().includes('RON')
+                coctelesCats.some(c => (item.category || '').toUpperCase().includes(c))
             );
         }
         if (type === 'carta') {
             return items.filter(item =>
-                !(item.category || '').toUpperCase().includes('TINTOS') &&
-                !(item.category || '').toUpperCase().includes('BLANCOS') &&
-                !(item.category || '').toUpperCase().includes('COCTELES') &&
-                !(item.category || '').toUpperCase().includes('GIN')
+                !vinosCats.some(c => (item.category || '').toUpperCase().includes(c)) &&
+                !coctelesCats.some(c => (item.category || '').toUpperCase().includes(c))
             );
         }
         return items;

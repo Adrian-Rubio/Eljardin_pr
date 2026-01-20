@@ -37,7 +37,9 @@ const MenuCard = ({ item, formatPrice, ALLERGEN_ICONS, hideImage }) => {
                     {item.name}
                 </h3>
                 <span className="price-tag" style={{ fontSize: '1.1rem', fontWeight: '500', color: '#333' }}>
-                    {safeVariants.length > 0 ? formatPrice(safeVariants[0].price) : formatPrice(item.base_price)}
+                    {safeVariants.length > 0
+                        ? safeVariants.map(v => formatPrice(v.price)).join(' / ')
+                        : formatPrice(item.base_price)}
                 </span>
             </div>
 

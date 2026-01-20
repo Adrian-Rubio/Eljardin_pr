@@ -1,8 +1,7 @@
 import sys
 import os
-# import json # Not needed for JSON dumping anymore
 
-# Add backend to sys.path (Dynamic path for Windows/Linux compatibility)
+# Add backend to sys.path
 sys.path.append(os.path.join(os.getcwd(), 'backend'))
 
 try:
@@ -14,12 +13,6 @@ except ImportError as e:
     sys.exit(1)
 
 def seed_full_menu():
-    # Helper to clean text
-    def clean_str(s):
-        if not s: return ""
-        return s.strip()
-
-    # Create tables if they don't exist
     models.Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     
@@ -27,182 +20,271 @@ def seed_full_menu():
     db.query(models.MenuItem).delete()
     db.commit()
 
-    # Helper for price variants (Glass vs Bottle) - Returns LIST (Python Object), not JSON string
-    def variants(copa=None, botella=None):
-        v = []
-        if copa: v.append({"name": "Copa", "price": copa})
-        if botella: v.append({"name": "Botella", "price": botella})
-        return v
+    def variants(v_list):
+        """Helper to create variant list: [(name, price), ...]"""
+        return [{"name": name, "price": price} for name, price in v_list]
 
-    menu_items = []
+    def split_allergens(s):
+        """Intelligently splits the 'sticky' allergen string from the text files."""
+        if not s: return []
+        known = [
+            "Dióxido de Azufre y Sulfitos", "Frutos de Cáscara", "Gluten", "Lácteos", 
+            "Huevos", "Pescado", "Moluscos", "Crustáceos", "Apio", "Mostaza", 
+            "Soja", "Sésamo", "Cacahuetes", "Altramuces"
+        ]
+        found = []
+        remaining = s
+        # Sort by length descending to catch longer names first (like 'Dióxido...')
+        for alg in sorted(known, key=len, reverse=True):
+            if alg in remaining:
+                found.append(alg)
+                remaining = remaining.replace(alg, "")
+        return found
 
-    # --- CARTA PRINCIPAL ---
+    items = []
+
+    # --- NUESTRA CARTA ---
+    def add_carta(name, price, category, description="", allergens_str=""):
+        items.append({
+            "name": name, 
+            "base_price": price, 
+            "category": category, 
+            "description": description, 
+            "allergens": split_allergens(allergens_str),
+            "type": "carta"
+        })
+
     # Bocados para empezar
-    menu_items.append({"name": "Croquetas de Jamón Ibérico", "description": "Croquetas cremosas de jamón ibérico rebozadas en panko (7 ud).", "base_price": 15.50, "category": "Bocados para empezar", "allergens": ["Lácteos", "Huevos"], "type": "carta"})
-    menu_items.append({"name": "Burrata al pesto con fruta de temporada", "description": "Ensalada de burrata con tomate rosa, higos y fresas, aliñada con salsa de pesto y vinagre balsámico.", "base_price": 22.00, "category": "Bocados para empezar", "allergens": ["Dióxido de Azufre y Sulfitos", "Lácteos", "Frutos de Cáscara"], "type": "carta"})
-    menu_items.append({"name": "Revuelto de Boletus y Foie", "description": "Revuelto de boletus guisado con cebolla caramelizada y escalope de foie.", "base_price": 24.95, "category": "Bocados para empezar", "allergens": ["Huevos"], "type": "carta"})
-    menu_items.append({"name": "Ensaladilla rusa con ventresca", "description": "Ensaladilla rusa casera con vinagreta de piparra, esferificación de aceituna negra y verde, piparra laminada, polvo de aceituna negra, ventresca de atún y tosta de pan cristal. (Opción sin gluten)", "base_price": 16.00, "category": "Bocados para empezar", "allergens": ["Huevos", "Pescado"], "type": "carta"})
-    menu_items.append({"name": "Jamón Ibérico", "description": "Jamón ibérico Reserva de la Familia de Julián Martín, acompañado de picos de pan.", "base_price": 33.00, "category": "Bocados para empezar", "allergens": [], "type": "carta"})
-    menu_items.append({"name": "Torreznos de Soria con patata revolcona", "description": "Torreznos de Soria horneados, acompañados de patata revolcona, con pimentón dulce de La Vera ahumado, sal de chistorra asada, aceite de pimentón y pimientos de padrón fritos.", "base_price": 14.00, "category": "Bocados para empezar", "allergens": [], "type": "carta"})
-    menu_items.append({"name": "Sobao con anchoa ahumada", "description": "Sobao Pasiego casero acompañado con crema de queso cabrales y coronado con una anchoa del Cantábrico ahumada (2 ud).", "base_price": 12.95, "category": "Bocados para empezar", "allergens": ["Lácteos", "Pescado"], "type": "carta"})
-    menu_items.append({"name": "Pan y Aperitivo", "description": "", "base_price": 2.25, "category": "Bocados para empezar", "allergens": [], "type": "carta"})
+    cat = "Bocados para empezar"
+    add_carta("Croquetas de Jamón Ibérico", 15.50, cat, "Croquetas cremosas de jamón ibérico rebozadas en panko (7 ud).", "LácteosHuevos")
+    add_carta("Burrata al pesto con fruta de temporada", 22.00, cat, "Ensalada de burrata con tomate rosa, higos y fresas, aliñada con salsa de pesto y vinagre balsámico.", "Dióxido de Azufre y SulfitosLácteosFrutos de Cáscara")
+    add_carta("Revuelto de Boletus y Foie", 24.95, cat, "Revuelto de boletus guisado con cebolla caramelizada y escalope de foie.", "Huevos")
+    add_carta("Ensaladilla rusa con ventresca y tostada de aceite de oliva", 16.00, cat, "Ensaladilla rusa casera con vinagreta de piparra, esferificación de aceituna negra y verde, piparra laminada, polvo de aceituna negra, ventresca de atún y tosta de pan cristal. (Opción sin gluten)", "HuevosPescado")
+    add_carta("Jamón Ibérico", 33.00, cat, "Jamón ibérico Reserva de la Familia de Julián Martín, acompañado de picos de pan.")
+    add_carta("Torreznos de Soria con patata revolcona", 14.00, cat, "Torreznos de Soria horneados, acompañados de patata revolcona, con pimentón dulce de La Vera ahumado, sal de chistorra asada, aceite de pimentón y pimientos de padrón fritos.")
+    add_carta("Sobao con anchoa ahumada y crema de queso Cabrales", 12.95, cat, "Sobao Pasiego casero acompañado con crema de queso cabrales y coronado con una anchoa del Cantábrico ahumada (2 ud).", "LácteosPescado")
+    add_carta("Pan y Aperitivo", 2.25, cat)
 
     # Arroces
-    menu_items.append({"name": "Arroz al horno con carrillera", "description": "Para 2 personas. Precio por persona. Arroz “Molino Roca” cocinado en llauna con carrillera guisada, pimientos de padrón, trompeta de la muerte, alioli de ajo asado y salsa demiglace.", "base_price": 24.00, "category": "Nuestros arroces para compartir", "allergens": ["Dióxido de Azufre y Sulfitos", "Huevos", "Apio"], "type": "carta"})
-    menu_items.append({"name": "Arroz meloso con bogavante", "description": "Para dos personas, Precio por persona. Arroz “Molino Roca” cocinado en salsa americana y con un bogavante por arroz.", "base_price": 35.00, "category": "Nuestros arroces para compartir", "allergens": ["Dióxido de Azufre y Sulfitos", "Pescado", "Apio", "Crustáceos", "Moluscos"], "type": "carta"})
+    cat = "Nuestros arroces para compartir"
+    add_carta("Arroz al horno con carrillera", 24.00, cat, "Para 2 personas. Precio por persona. Arroz “Molino Roca” cocinado en llauna con carrillera guisada, pimientos de padrón, trompeta de la muerte, alioli de ajo asado y salsa demiglace", "Dióxido de Azufre y SulfitosHuevosApio")
+    add_carta("Arroz meloso con bogavante", 35.00, cat, "Para dos personas, Precio por persona. Arroz “Molino Roca” cocinado en salsa americana y con un bogavante por arroz.", "Dióxido de Azufre y SulfitosPescadoApioCrustáceosMoluscos")
 
     # Carnes
-    menu_items.append({"name": "Lagarto Ibérico al Pedro Ximénez", "description": "Lagarto ibérico a la brasa glaseado con una reducción de Pedro Ximénez sobre una base de espuma de patata, milhojas de patata y brotes de temporada.", "base_price": 25.00, "category": "Alma Carnívora", "allergens": ["Dióxido de Azufre y Sulfitos", "Lácteos"], "type": "carta"})
-    menu_items.append({"name": "Chuletón a la brasa", "description": "Chuletón de alta maduración, 45 días, cocinado a la brasa de carbón leña y sal Maldon.", "base_price": 95.00, "category": "Alma Carnívora", "allergens": [], "type": "carta"})
-    menu_items.append({"name": "Lomo de vaca a la pimienta", "description": "Lomo bajo a la brasa de carbón leña napado con salsa pimienta y acompañado de patatas fritas.", "base_price": 27.00, "category": "Alma Carnívora", "allergens": ["Lácteos"], "type": "carta"})
-    menu_items.append({"name": "Steak tartar", "description": "Steak tartar de solomillo de ternera cortado a cuchillo, preparado en mesa, con picante al gusto. (opción sin gluten).", "base_price": 28.00, "category": "Alma Carnívora", "allergens": ["Dióxido de Azufre y Sulfitos", "Huevos", "Pescado", "Soja", "Mostaza"], "type": "carta"})
+    cat = "Alma Carnívora"
+    add_carta("Lagarto Ibérico al Pedro Ximénez", 25.00, cat, "Lagarto ibérico a la brasa glaseado con una reducción de Pedro Ximénez sobre una base de espuma de patata, milhojas de patata y brotes de temporada.", "Dióxido de Azufre y SulfitosLácteos")
+    add_carta("Chuletón a la brasa", 95.00, cat, "Chuletón de alta maduración, 45 días, cocinado a la brasa de carbón leña y sal Maldon.")
+    add_carta("Lomo de vaca a la pimienta", 27.00, cat, "Lomo bajo a la brasa de carbón leña napado con salsa pimienta y acompañado de patatas fritas.", "Lácteos")
+    add_carta("Steak tartar con torta de pan de aceite", 28.00, cat, "Steak tartar de solomillo de ternera cortado a cuchillo, preparado en mesa, con picante al gusto. (opción sin gluten).", "Dióxido de Azufre y SulfitosHuevosPescadoSojaMostaza")
 
     # Marinera
-    menu_items.append({"name": "Merluza en salsa verde", "description": "Merluza a la brasa con salsa verde y acompañado de mini patatas asadas.", "base_price": 26.00, "category": "Alma Marinera", "allergens": ["Pescado"], "type": "carta"})
-    menu_items.append({"name": "Rape a la Mediterránea", "description": "Rape a la brasa acompañado de tomate cherry, albahaca, piquillos, mini patatas y tomillo.", "base_price": 29.00, "category": "Alma Marinera", "allergens": ["Lácteos", "Pescado"], "type": "carta"})
-    menu_items.append({"name": "Chipirones encebollados", "description": "Chipirones salteados y guisados con cebolla caramelizada y guindilla vasca.", "base_price": 29.00, "category": "Alma Marinera", "allergens": ["Moluscos"], "type": "carta"})
-    menu_items.append({"name": "Pulpo a la brasa", "description": "Pulpo a la brasa de carbón leña con espuma de puré de patata, pimentón dulce de la vera y AOVE.", "base_price": 28.00, "category": "Alma Marinera", "allergens": ["Lácteos", "Moluscos"], "type": "carta"})
-    menu_items.append({"name": "Txangurro a la Donostiarra", "description": "Centollo desmigado gratinado con crema de mariscos, cebolla caramelizada, Brandy y mantequilla. Acompañado de pan cristal.", "base_price": 26.00, "category": "Alma Marinera", "allergens": ["Lácteos", "Crustáceos", "Moluscos"], "type": "carta"})
+    cat = "Alma Marinera"
+    add_carta("Merluza en salsa verde", 26.00, cat, "Merluza a la brasa con salsa verde y acompañado de mini patatas asadas.", "Pescado")
+    add_carta("Rape a la Mediterránea", 29.00, cat, "Rape a la brasa acompañado de tomate cherry, albahaca, piquillos, mini patatas y tomillo.", "LácteosPescado")
+    add_carta("Chipirones encebollados", 29.00, cat, "Chipirones salteados y guisados con cebolla caramelizada y guindilla vasca.", "Moluscos")
+    add_carta("Pulpo a la brasa con espuma de patata", 28.00, cat, "Pulpo a la brasa de carbón leña con espuma de puré de patata, pimentón dulce de la vera y AOVE.", "LácteosMoluscos")
+    add_carta("Txangurro a la Donostiarra", 26.00, cat, "Centollo desmigado gratinado con crema de mariscos, cebolla caramelizada, Brandy y mantequilla. Acompañado de pan cristal.", "LácteosCrustáceosMoluscos")
 
     # Guarniciones
-    menu_items.append({"name": "Ensalada a la Donostiarra", "base_price": 4.00, "category": "Guarniciones", "allergens": ["Dióxido de Azufre y Sulfitos"], "type": "carta"})
-    menu_items.append({"name": "Patatas fritas", "base_price": 4.00, "category": "Guarniciones", "type": "carta"})
-    menu_items.append({"name": "Piquillos confitados", "base_price": 6.00, "category": "Guarniciones", "type": "carta"})
-    menu_items.append({"name": "Pan cristal con tomate", "base_price": 4.50, "category": "Guarniciones", "type": "carta"})
+    cat = "Guarniciones"
+    add_carta("Ensalada a la Donostiarra", 4.00, cat, "", "Dióxido de Azufre y Sulfitos")
+    add_carta("Patatas fritas", 4.00, cat)
+    add_carta("Piquillos confitados", 6.00, cat)
+    add_carta("Pan cristal con tomate", 4.50, cat)
 
     # Postres
-    menu_items.append({"name": "Brownie de chocolate", "description": "Brownie de chocolate negro y mantequilla tostada acompañado de helado de caramelo salado y sal Maldon.", "base_price": 9.00, "category": "Alma Pastelera", "allergens": ["Lácteos", "Huevos", "Frutos de Cáscara"], "type": "carta"})
-    menu_items.append({"name": "Coulant de avellana", "description": "Coulant de avellana horneado al momento (8min), fundido por dentro, acompañado de helado de frutos rojos.", "base_price": 11.00, "category": "Alma Pastelera", "allergens": ["Dióxido de Azufre y Sulfitos", "Lácteos", "Huevos", "Frutos de Cáscara"], "type": "carta"})
-    menu_items.append({"name": "Milhojas de maracuyá", "description": "Milhojas con crema diplomática de maracuyá y helado de coco.", "base_price": 12.00, "category": "Alma Pastelera", "allergens": ["Lácteos"], "type": "carta"})
-    menu_items.append({"name": "Torrija de toffee y jengibre", "description": "Torrija en pan brioche macerada en toffee, jengibre y cítricos, acompañado de helado de café.", "base_price": 9.00, "category": "Alma Pastelera", "allergens": ["Dióxido de Azufre y Sulfitos", "Lácteos", "Huevos", "Frutos de Cáscara"], "type": "carta"})
+    cat = "Alma Pastelera"
+    add_carta("Brownie de chocolate", 9.00, cat, "Brownie de chocolate negro y mantequilla tostada acompañado de helado de caramelo salado y sal Maldon.", "LácteosHuevosFrutos de Cáscara")
+    add_carta("Coulant de avellana", 11.00, cat, "Coulant de avellana horneado al momento (8min), fundido por dentro, acompañado de helado de frutos rojos.", "Dióxido de Azufre y SulfitosLácteosHuevosFrutos de Cáscara")
+    add_carta("Milhojas de maracuyá", 12.00, cat, "Milhojas con crema diplomática de maracuyá y helado de coco.", "Lácteos")
+    add_carta("Torrija de toffee y jengibre", 9.00, cat, "Torrija en pan brioche macerada en toffee, jengibre y cítricos, acompañado de helado de café.", "Dióxido de Azufre y SulfitosLácteosHuevosFrutos de Cáscara")
 
     # --- VINOS ---
-    # Tintos Madrid
-    menu_items.append({"name": "El Hombre Bala", "description": "98% Garnacha 2% Cariñena.", "base_price": 41.00, "category": "Tintos DOP Madrid y Sierra de Gredos", "type": "vinos"})
-    menu_items.append({"name": "Molaracha", "description": "95% Garnacha y 5% Malvar. Bodega Tinta Castiza.", "base_price": 33.00, "category": "Tintos DOP Madrid y Sierra de Gredos", "type": "vinos"})
-    
-    # Ribera Sacra
-    menu_items.append({"name": "Tolo do Xisto", "description": "100% Mencía.", "base_price": 37.00, "category": "Tintos DOP Ribera Sacra", "type": "vinos"})
-    
-    # Extremadura / Cadiz / Priorat
-    menu_items.append({"name": "Habla del Silencio", "description": "50% Syrah 30% Tempranillo 20% Cabernet Sauvignon", "base_price": 28.00, "category": "Tintos VT Extremadura", "type": "vinos"})
-    menu_items.append({"name": "Forlong Terracota", "description": "100% Tintilla de Rota. Bodegas Forlong.", "base_price": 36.00, "category": "Tintos DOVT Cádiz", "type": "vinos"})
-    menu_items.append({"name": "Pissarres", "description": "Priorat. 50% Garnacha 40% Cariñena 10% Cabernet Sauvignon.", "base_price": 30.00, "category": "Tintos DOCa Priorat", "type": "vinos"})
-    menu_items.append({"name": "Samsara del Priorat", "description": "Priorat. 50% Garnacha 35% Cariñena 10% Syrah 5% Cabernet Sauvignon.", "base_price": 37.00, "category": "Tintos DOCa Priorat", "type": "vinos"})
+    def add_vino(name, price, category, description="", v_list=None):
+        items.append({
+            "name": name, 
+            "base_price": price, 
+            "category": category, 
+            "description": description, 
+            "variants": variants(v_list) if v_list else [],
+            "type": "vinos"
+        })
 
-    # Rioja
-    menu_items.append({"name": "Laderas Bideona Tempranillo", "description": "100% Tempranillo. Bodega Bideona.", "base_price": 27.00, "category": "Tintos DOCa Rioja", "type": "vinos"})
-    menu_items.append({"name": "Heraclio Alfaro Crianza", "description": "85% Tempranillo, 10% Garnacha y 5% Graciano.", "base_price": 26.00, "category": "Tintos DOCa Rioja", "type": "vinos"})
-    menu_items.append({"name": "200 Monges Reserva", "description": "85% tempranillo, 10% Graciano y 5% Garnacha tinta.", "base_price": 67.00, "category": "Tintos DOCa Rioja", "type": "vinos"})
-    menu_items.append({"name": "Marqués de Riscal Reserva", "description": "100% Tempranillo.", "base_price": 39.00, "category": "Tintos DOCa Rioja", "type": "vinos"})
-    menu_items.append({"name": "Martínez Lacuesta Selecto Crianza", "description": "100% Tempranillo.", "base_price": 26.00, "variants": variants(4.50, 26.00), "category": "Tintos DOCa Rioja", "type": "vinos"})
-    menu_items.append({"name": "CM de Matarromera", "description": "100% Tempranillo.", "base_price": 36.00, "category": "Tintos DOCa Rioja", "type": "vinos"})
-    menu_items.append({"name": "Azpilicueta Origen", "description": "100% Tempranillo.", "base_price": 27.00, "category": "Tintos DOCa Rioja", "type": "vinos"})
-    menu_items.append({"name": "Beronia Reserva 198 Barricas", "description": "100% Tempranillo.", "base_price": 37.00, "category": "Tintos DOCa Rioja", "type": "vinos"})
+    # Tintos
+    add_vino("El Hombre Bala", 41.00, "Tintos DOP Madrid y Sierra de Gredos", "98% Garnacha 2% Cariñena.")
+    add_vino("Molaracha", 33.00, "Tintos DOP Madrid y Sierra de Gredos", "95% Garnacha y 5% Malvar. Bodega Tinta Castiza.")
+    add_vino("Tolo do Xisto", 37.00, "Tintos DOP Ribera Sacra", "100% Mencía.")
+    add_vino("Habla del Silencio", 28.00, "Tintos VT Extremadura", "50% Syrah 30% Tempranillo 20% Cabernet Sauvignon")
+    add_vino("Forlong Terracota", 36.00, "Tintos DOVT Cádiz", "100% Tintilla de Rota. Bodegas Forlong.")
+    add_vino("Pissarres", 30.00, "Tintos DOCa Priorat", "50% Garnacha 40% Cariñena 10% Cabernet Sauvignon.")
+    add_vino("Samsara del Priorat", 37.00, "Tintos DOCa Priorat", "50% Garnacha 35% Cariñena 10% Syrah 5% Cabernet Sauvignon.")
+    add_vino("Laderas Bideona Tempranillo", 27.00, "Tintos DOCa Rioja", "100% Tempranillo. Bodega Bideona.")
+    add_vino("Heraclio Alfaro Crianza", 26.00, "Tintos DOCa Rioja", "85% Tempranillo, 10% Garnacha y 5% Graciano.")
+    add_vino("200 Monges Reserva", 67.00, "Tintos DOCa Rioja", "85% tempranillo, 10% Graciano y 5% Garnacha tinta.")
+    add_vino("Marqués de Riscal Reserva", 39.00, "Tintos DOCa Rioja", "100% Tempranillo. Bodega Marqués de Riscal.")
+    add_vino("Martínez Lacuesta Selecto Crianza", 26.00, "Tintos DOCa Rioja", "100% Tempranillo.", [("Copa", 4.50), ("Botella", 26.00)])
+    add_vino("CM de Matarromera", 36.00, "Tintos DOCa Rioja", "100% Tempranillo. Bodegas Matarromera.")
+    add_vino("Azpilicueta Origen", 27.00, "Tintos DOCa Rioja", "100% Tempranillo. Bodega Azpilicueta.")
+    add_vino("Beronia Reserva 198 Barricas", 37.00, "Tintos DOCa Rioja", "100% Tempranillo.")
+    add_vino("Cristo de Samaniego", 65.00, "Tintos DOCa Rioja", "100% Tempranillo.")
     
-    # Ribera del Duero
-    menu_items.append({"name": "Malleolus de Emilio Moro", "base_price": 52.00, "category": "DOP Ribera Del Duero", "type": "vinos"})
-    menu_items.append({"name": "Matarromera Crianza", "base_price": 41.00, "category": "DOP Ribera Del Duero", "type": "vinos"})
-    menu_items.append({"name": "Arzuaga Crianza", "base_price": 43.00, "category": "DOP Ribera Del Duero", "type": "vinos"})
-    menu_items.append({"name": "Aureo", "base_price": 38.00, "category": "DOP Ribera Del Duero", "type": "vinos"})
-    menu_items.append({"name": "Carmelo Rodero 9 Meses", "base_price": 33.00, "category": "DOP Ribera Del Duero", "type": "vinos"})
-    menu_items.append({"name": "Carmelo Rodero Crianza", "base_price": 44.00, "category": "DOP Ribera Del Duero", "type": "vinos"})
-    menu_items.append({"name": "Emilio Moro Cosecha", "base_price": 41.00, "category": "DOP Ribera Del Duero", "type": "vinos"})
-    menu_items.append({"name": "Pago de Capellanes Reserva", "base_price": 57.00, "category": "DOP Ribera Del Duero", "type": "vinos"})
-    menu_items.append({"name": "Melior Roble", "base_price": 26.00, "variants": variants(4.50, 26.00), "category": "DOP Ribera Del Duero", "type": "vinos"})
-    menu_items.append({"name": "Prestigio Matarromera", "base_price": 71.00, "category": "DOP Ribera Del Duero", "type": "vinos"})
-    menu_items.append({"name": "Marqués de Burgos 8000", "base_price": 46.00, "category": "DOP Ribera Del Duero", "type": "vinos"})
+    # Ribera
+    cat = "DOP Ribera Del Duero"
+    add_vino("Malleolus de Emilio Moro", 52.00, cat, "100% Tinto Fino.")
+    add_vino("Matarromera Crianza", 41.00, cat, "100% Tempranillo.")
+    add_vino("Arzuaga Crianza", 43.00, cat, "95% Tempranillo y 5% Cabernet Sauvignon.")
+    add_vino("Aureo", 38.00, cat, "100% Tempranillo. Bodega Avelino Vegas.")
+    add_vino("Carmelo Rodero 9 Meses", 33.00, cat, "100% Tempranillo. Bodega Carmelo Rodero.")
+    add_vino("Carmelo Rodero Crianza", 44.00, cat, "100% Tempranillo. Bodega Carmelo Rodero.")
+    add_vino("Emilio Moro Cosecha", 41.00, cat, "100% Tempranillo. Bodega Emilio Moro.")
+    add_vino("Pago de Capellanes Reserva", 57.00, cat, "100% Tempranillo. Bodega Pago de Capellanes.")
+    add_vino("Melior Roble", 26.00, cat, "100% Tempranillo.", [("Copa", 4.50), ("Botella", 26.00)])
+    add_vino("Prestigio Matarromera", 71.00, cat, "100% Tempranillo.")
+    add_vino("Marqués de Burgos 8000", 46.00, cat, "100% Tempranillo. Bodegas LAN.")
 
-    # Otros Vinos
-    menu_items.append({"name": "Abadia Retuerta Selección", "base_price": 51.50, "category": "Tintos VT Castilla y León", "type": "vinos"})
-    menu_items.append({"name": "Hop-Hop Grillo", "base_price": 42.00, "category": "Tintos DO Somontano", "type": "vinos"})
+    # Otros Tintos
+    add_vino("Abadia Retuerta Selección", 51.50, "Tintos VT Castilla y León", "77%Tempranillo, 12% Cabernet Sauvignon, 9% Syrah y 2% Merlot")
+    add_vino("Hop-Hop Grillo", 42.00, "Tintos DO Somontano", "50% Syrah y 50% Garnacha. Bodega El Grillo y la Luna.")
 
     # Blancos
-    menu_items.append({"name": "Circe", "base_price": 27.00, "category": "Blancos. DO Rueda", "type": "vinos"})
-    menu_items.append({"name": "Melior Verdejo", "base_price": 24.00, "variants": variants(4.50, 24.00), "category": "Blancos. DO Rueda", "type": "vinos"})
-    menu_items.append({"name": "Semidulce La Chalada", "base_price": 26.00, "variants": variants(4.50, 26.00), "category": "Blancos. DO Rueda", "type": "vinos"})
-    menu_items.append({"name": "Sanz Sauvignon Blanco", "base_price": 26.00, "category": "Blancos. DO Rueda", "type": "vinos"})
-    menu_items.append({"name": "Belondrade Quinta Apolonia", "base_price": 39.00, "category": "Blancos VT Tierra de Castilla-León", "type": "vinos"})
-    menu_items.append({"name": "Díscolo", "base_price": 37.00, "category": "Blancos VT Tierra de Castilla-León", "type": "vinos"})
-    menu_items.append({"name": "Terras Gauda", "base_price": 34.00, "category": "Blancos DO Rías Baixas", "type": "vinos"})
-    menu_items.append({"name": "Martin Codax", "base_price": 27.00, "variants": variants(4.50, 27.00), "category": "Blancos DO Rías Baixas", "type": "vinos"})
-    menu_items.append({"name": "Santiago Ruiz", "base_price": 38.00, "category": "Blancos DO Rías Baixas", "type": "vinos"})
-    menu_items.append({"name": "Viña Caeira Matarromera", "base_price": 32.00, "category": "Blancos DO Rías Baixas", "type": "vinos"})
-    menu_items.append({"name": "La Revelia de Emilio Moro", "base_price": 49.00, "category": "Blancos DO Bierzo", "type": "vinos"})
-    menu_items.append({"name": "Sonrisa Dominio de Tares", "base_price": 26.00, "category": "Blancos DO Bierzo", "type": "vinos"})
-    menu_items.append({"name": "Mara Martín", "base_price": 27.00, "variants": variants(4.50, 27.00), "category": "Blancos D.O. Monterrei", "type": "vinos"})
-    menu_items.append({"name": "Bideona Cabezadas", "base_price": 27.00, "category": "Blancos DO Rioja", "type": "vinos"})
+    add_vino("Circe", 27.00, "Blancos. DO Rueda", "100% Verdejo. Bodega Avelino Vegas.")
+    add_vino("Melior Verdejo", 24.00, "Blancos. DO Rueda", "100% Verdejo. Bodega Matarromera.", [("Copa", 4.50), ("Botella", 24.00)])
+    add_vino("Semidulce La Chalada", 26.00, "Blancos. DO Rueda", "100% Verdejo. Bodega Javier Sanz.", [("Copa", 4.50), ("Botella", 26.00)])
+    add_vino("Sanz Sauvignon Blanco", 26.00, "Blancos. DO Rueda", "100% Sauvignon Blanco. Bodega Javier Sanz.")
+    add_vino("Belondrade Quinta Apolonia", 39.00, "Blancos VT Tierra de Castilla-León", "100% Verdejo. Bodega Belondrade.")
+    add_vino("Díscolo", 37.00, "Blancos VT Tierra de Castilla-León", "Malvasía y Verdejo.")
+    add_vino("Terras Gauda", 34.00, "Blancos DO Rías Baixas", "70% Albariño 22% Caiño Blanco 8% Loureiro.")
+    add_vino("Martin Codax", 27.00, "Blancos DO Rías Baixas", "100% Albariño.", [("Copa", 4.50), ("Botella", 27.00)])
+    add_vino("Santiago Ruiz", 38.00, "Blancos DO Rías Baixas", "74% Albariño, 8% Loureiro, 8% Godello, 5% Treixadura, 5% Caiño Blanco. Bodega Santiago Ruiz.")
+    add_vino("Viña Caeira Matarromera", 32.00, "Blancos DO Rías Baixas", "100% Albariño. Bodega Matarromera.")
+    add_vino("La Revelia de Emilio Moro", 49.00, "Blancos DO Bierzo", "100% Godello.")
+    add_vino("Sonrisa Dominio de Tares", 26.00, "Blancos DO Bierzo", "100% Godello.")
+    add_vino("Mara Martín", 27.00, "Blancos D.O. Monterrei", "100% Godello.", [("Copa", 4.50), ("Botella", 27.00)])
+    add_vino("Bideona Cabezadas", 27.00, "Blancos DO Rioja", "100% Viura. Bodegas Bideona.")
+    add_vino("Nicte Rosa Pálido", 27.00, "Rosados VT Castilla-León", "100% Prieto picudo. Bodega Avelino Vegas.")
 
-    # Rosados y Cavas
-    menu_items.append({"name": "Nicte Rosa Pálido", "base_price": 27.00, "category": "Rosados VT Castilla-León", "type": "vinos"})
-    menu_items.append({"name": "Champagne Telmont Reserve Rose", "base_price": 98.00, "category": "Cavas y Champagnes", "type": "vinos"})
-    menu_items.append({"name": "Champagne G.H. Mumm", "base_price": 85.00, "category": "Cavas y Champagnes", "type": "vinos"})
-    menu_items.append({"name": "Cava Canals Nadal Brut Nature Reserva", "base_price": 28.00, "variants": variants(6.50, 28.00), "category": "Cavas y Champagnes", "type": "vinos"})
-    menu_items.append({"name": "Cava Canals Nadal Brut Rosé", "base_price": 32.00, "variants": variants(7.00, 32.00), "category": "Cavas y Champagnes", "type": "vinos"})
+    # Cavas
+    cat = "Cavas y Champagnes"
+    add_vino("Champagne Telmont Reserve Rose", 98.00, cat, "87% Chardonnay y 13% Meunier. Bodega Champagne Telmont.")
+    add_vino("Champagne G.H. Mumm", 85.00, cat, "30% Chardonnay, 25% Pinot Meunier, 45% Pinot Noir. Bodega G.H. Mumm.")
+    add_vino("Cava Canals Nadal Brut Nature Reserva", 28.00, cat, "45% Macabeu, 40% Xarel·lo, 15% Parellada. Bodega Canals Nadal.", [("Copa", 6.50), ("Botella", 28.00)])
+    add_vino("Cava Canals Nadal Brut Rosé", 32.00, cat, "100% Monovarietal de Trepat. Bodegas Canals Nadal.", [("Copa", 7.00), ("Botella", 32.00)])
+    add_vino("Cava Canals Nadal BN Reserva Xarel-lo", 34.00, cat, "100 % Xarel-lo. Bodega Canals Nadal.")
 
-    # Vinos generosos
-    menu_items.append({"name": "Amontillado Micaela", "base_price": 4.50, "category": "Vinos generosos y dulces (Por copa)", "type": "vinos"})
-    menu_items.append({"name": "Manzanilla Micaela", "base_price": 5.50, "category": "Vinos generosos y dulces (Por copa)", "type": "vinos"})
-    menu_items.append({"name": "Pedro Ximenez Micaela", "base_price": 6.50, "category": "Vinos generosos y dulces (Por copa)", "type": "vinos"})
+    # Generosos
+    cat = "Vinos generosos y dulces (Por copa)"
+    add_vino("Amontillado Micaela", 4.50, cat, "Palomino Fino")
+    add_vino("Manzanilla Micaela", 5.50, cat, "Palomino Fino")
+    add_vino("Pedro Ximenez Micaela", 6.50, cat, "Pedro Ximenez")
 
     # --- ESPIRITUOSOS ---
+    def add_spirit(name, price, category, description="", v_list=None):
+        items.append({
+            "name": name, 
+            "base_price": price, 
+            "category": category, 
+            "description": description, 
+            "variants": variants(v_list) if v_list else [],
+            "type": "cocteles"
+        })
+
     # Cocteles
-    menu_items.append({"name": "Petroni Spritz", "description": "El aperitivo gallego, versión del Aperol spritz.", "base_price": 12.00, "category": "Cocteles", "type": "cocteles"})
-    menu_items.append({"name": "Rebujito Soho's", "description": "Vino fino con limón, hierbabuena y bergamota.", "base_price": 9.00, "category": "Cocteles", "type": "cocteles"})
-    menu_items.append({"name": "Mojito", "description": "Ron blanco, lima, menta.", "base_price": 12.00, "category": "Cocteles", "type": "cocteles"})
-    menu_items.append({"name": "Margarita", "description": "Tequila, lima, licor de naranja.", "base_price": 12.00, "category": "Cocteles", "type": "cocteles"})
-    menu_items.append({"name": "Caipirinha", "description": "Cachaza, lima, azúcar.", "base_price": 12.00, "category": "Cocteles", "type": "cocteles"})
-    
+    cat = "Cocteles"
+    add_spirit("Petroni Spritz", 12.00, cat, "El aperitivo gallego , versión del Aperol spritz con Petroni aperitivo, cava y soda.")
+    add_spirit("Rebujito Soho's", 9.00, cat, "Vino fino con limón, hierbabuena y bergamota en spritz.")
+    add_spirit("Mojito", 12.00, cat, "Ron blanco, zumo de lima, azúcar de caña, menta , soda.")
+    add_spirit("Margarita", 12.00, cat, "Tequila, zumo de lima, licor de naranja y sirope de azúcar.")
+    add_spirit("Caipirinha", 12.00, cat, "Caipirinha clásica a base de Cachaza, zumo de lima y azúcar.")
+
     # Whisky
-    menu_items.append({"name": "DYC 8", "base_price": 11.00, "category": "Whisky", "type": "cocteles"})
-    menu_items.append({"name": "Makers Mark", "base_price": 12.00, "category": "Whisky", "type": "cocteles"})
-    menu_items.append({"name": "Jameson", "base_price": 11.00, "category": "Whisky", "type": "cocteles"})
-    menu_items.append({"name": "Hibiki Suntory Harmony", "base_price": 25.00, "category": "Whisky", "type": "cocteles"})
-    menu_items.append({"name": "Toki Suntory", "base_price": 14.00, "category": "Whisky", "type": "cocteles"})
-    menu_items.append({"name": "Macallan 12", "base_price": 18.00, "category": "Whisky", "type": "cocteles"})
-    menu_items.append({"name": "JW Black Label", "base_price": 14.00, "category": "Whisky", "type": "cocteles"})
-    menu_items.append({"name": "Jack Daniels", "base_price": 12.00, "category": "Whisky", "type": "cocteles"})
+    cat = "Whisky"
+    add_spirit("DYC 8", 11.00, cat, "", [("Copa", 11.00), ("Botella", 100.00)])
+    add_spirit("Makers Mark", 12.00, cat, "", [("Copa", 12.00), ("Botella", 120.00)])
+    add_spirit("Jameson", 11.00, cat, "", [("Copa", 11.00), ("Botella", 120.00)])
+    add_spirit("Hibiki Suntory Harmony", 25.00, cat, "", [("Copa", 25.00), ("Botella", 200.00)])
+    add_spirit("Toki Suntory", 14.00, cat, "", [("Copa", 14.00), ("Botella", 120.00)])
+    add_spirit("Macallan 12", 18.00, cat)
+    add_spirit("JW Black Label", 14.00, cat, "", [("Copa", 14.00), ("Botella", 140.00)])
+    add_spirit("JW Red Label", 10.00, cat, "", [("Copa", 10.00), ("Botella", 120.00)])
+    add_spirit("J&B", 10.00, cat)
+    add_spirit("Dewar's White Label", 10.00, cat, "", [("Copa", 10.00), ("Botella", 100.00)])
+    add_spirit("Flaming Pig", 14.00, cat, "", [("Copa", 14.00), ("Botella", 140.00)])
+    add_spirit("Chivas 12", 16.00, cat)
+    add_spirit("Jack Daniels", 12.00, cat)
+    add_spirit("Ballantine's", 10.00, cat)
 
     # Ron
-    menu_items.append({"name": "Matusalén 10", "base_price": 12.00, "category": "Ron", "type": "cocteles"})
-    menu_items.append({"name": "Zacapa 23", "base_price": 18.00, "category": "Ron", "type": "cocteles"})
-    menu_items.append({"name": "Santa Teresa", "base_price": 10.00, "category": "Ron", "type": "cocteles"})
-    menu_items.append({"name": "Havana Club Especial", "base_price": 10.00, "category": "Ron", "type": "cocteles"})
+    cat = "Ron"
+    add_spirit("Matusalén 10", 12.00, cat, "", [("Copa", 12.00), ("Botella", 140.00)])
+    add_spirit("Zacapa 23", 18.00, cat, "", [("Copa", 18.00), ("Botella", 160.00)])
+    add_spirit("Santa Teresa", 10.00, cat, "", [("Copa", 10.00), ("Botella", 100.00)])
+    add_spirit("Barceló", 10.00, cat)
+    add_spirit("Brugal", 10.00, cat)
+    add_spirit("Havana Club Especial", 10.00, cat)
+
+    # Vodka
+    cat = "Vodka"
+    add_spirit("Absolut", 10.00, cat)
+    add_spirit("Grey Goose", 16.00, cat, "", [("Copa", 16.00), ("Botella", 140.00)])
+
+    # Tequila
+    cat = "Tequila"
+    add_spirit("Olmeca blanco", 10.00, cat, "", [("Corto", 5.00), ("Largo", 10.00)])
+    add_spirit("Olmeca Reposado", 10.00, cat, "", [("Corto", 5.00), ("Largo", 10.00)])
 
     # Gin
-    menu_items.append({"name": "Martin Miller's", "base_price": 14.00, "category": "Gin", "type": "cocteles"})
-    menu_items.append({"name": "G'vine", "base_price": 16.00, "category": "Gin", "type": "cocteles"})
-    menu_items.append({"name": "Gin Mare", "base_price": 16.00, "category": "Gin", "type": "cocteles"})
-    menu_items.append({"name": "Canaima Gin", "base_price": 12.00, "category": "Gin", "type": "cocteles"})
-    menu_items.append({"name": "Bombay Sapphire", "base_price": 11.00, "category": "Gin", "type": "cocteles"})
-    menu_items.append({"name": "Roku Gin", "base_price": 16.00, "category": "Gin", "type": "cocteles"})
-    menu_items.append({"name": "Larios 12", "base_price": 11.00, "category": "Gin", "type": "cocteles"})
-    menu_items.append({"name": "Le Tribute", "base_price": 16.00, "category": "Gin", "type": "cocteles"})
-    menu_items.append({"name": "Beefeater", "base_price": 11.00, "category": "Gin", "type": "cocteles"})
-    menu_items.append({"name": "Hendrick's", "base_price": 16.00, "category": "Gin", "type": "cocteles"})
-    menu_items.append({"name": "Puerto de Indias", "base_price": 11.00, "category": "Gin", "type": "cocteles"})
-    menu_items.append({"name": "Seagram's", "base_price": 11.00, "category": "Gin", "type": "cocteles"})
-    menu_items.append({"name": "Tanqueray", "base_price": 11.00, "category": "Gin", "type": "cocteles"})
+    cat = "Gin"
+    add_spirit("Martin Miller's", 14.00, cat, "", [("Copa", 14.00), ("Botella", 120.00)])
+    add_spirit("G'vine", 16.00, cat, "", [("Copa", 16.00), ("Botella", 140.00)])
+    add_spirit("Gin Mare", 16.00, cat, "", [("Copa", 16.00), ("Botella", 140.00)])
+    add_spirit("Canaima Gin", 12.00, cat, "", [("Copa", 12.00), ("Botella", 140.00)])
+    add_spirit("Bombay Sapphire", 11.00, cat, "", [("Copa", 11.00), ("Botella", 120.00)])
+    add_spirit("Roku Gin", 16.00, cat, "", [("Copa", 16.00), ("Botella", 120.00)])
+    add_spirit("Larios 12", 11.00, cat, "", [("Copa", 11.00), ("Botella", 100.00)])
+    add_spirit("Le Tribute", 16.00, cat, "Ginebra")
+    add_spirit("Beefeater", 11.00, cat, "Ginebra")
+    add_spirit("Hendrick's", 16.00, cat)
+    add_spirit("Puerto de Indias", 11.00, cat)
+    add_spirit("Seagram's", 11.00, cat)
+    add_spirit("Seagram´s 0'0", 10.00, cat)
+    add_spirit("Tanqueray", 11.00, cat)
 
-    # Otros
-    menu_items.append({"name": "Grey Goose", "base_price": 16.00, "category": "Vodka", "type": "cocteles"})
-    menu_items.append({"name": "Absolut", "base_price": 10.00, "category": "Vodka", "type": "cocteles"})
-    menu_items.append({"name": "Olmeca blanco", "base_price": 10.00, "variants": variants(5.00, 10.00), "category": "Tequila", "type": "cocteles"})
-    menu_items.append({"name": "Petroni Rojo", "base_price": 7.00, "category": "Vermús", "type": "cocteles"})
-    menu_items.append({"name": "Licor Baileys", "base_price": 8.00, "variants": variants(5.00, 8.00), "category": "Licores", "type": "cocteles"})
+    # Vermús
+    cat = "Vermús"
+    add_spirit("Petroni Rojo", 7.00, cat)
+    add_spirit("Petroni Blanco", 7.00, cat)
+    add_spirit("Martini Bianco", 6.00, cat)
+    add_spirit("Martini Dry", 6.00, cat)
 
-    # --- INSERT INTO DB ---
-    print(f"Inserting {len(menu_items)} items...")
-    for item in menu_items:
-        # Remove 'type' key as it's not in the model
-        if 'type' in item:
-            del item['type']
-        db_item = models.MenuItem(**item)
+    # Licores
+    cat = "Licores"
+    add_spirit("Licor Baileys", 8.00, cat, "", [("Corto", 5.00), ("Largo", 8.00)])
+    add_spirit("Licor Crema de orujo", 6.50, cat, "", [("Corto", 4.00), ("Largo", 6.50)])
+    add_spirit("Licor de café", 6.50, cat, "", [("Corto", 4.00), ("Largo", 6.50)])
+    add_spirit("Licor de hierbas", 6.50, cat, "", [("Corto", 4.00), ("Largo", 6.50)])
+    add_spirit("Licor Limoncello", 6.50, cat, "", [("Corto", 4.00), ("Largo", 6.50)])
+    add_spirit("Licor Manzana", 6.50, cat, "", [("Corto", 4.00), ("Largo", 6.50)])
+    add_spirit("Licor Orujo", 6.50, cat, "", [("Corto", 4.00), ("Largo", 6.50)])
+    add_spirit("Licor pacharán Berezco", 8.00, cat, "", [("Corto", 5.00), ("Largo", 8.00)])
+
+    print(f"Inserting {len(items)} items...")
+    for item_data in items:
+        # Avoid 'type' for the model if not exists, but we can use it to filter if needed
+        # In this DB model MenuItem doesn't have 'type', it uses categories to filter in frontend
+        # But wait, let's check models.py
+        db_item = models.MenuItem(
+            name=item_data["name"],
+            description=item_data.get("description", ""),
+            base_price=item_data["base_price"],
+            category=item_data["category"],
+            allergens=item_data.get("allergens", []),
+            variants=item_data.get("variants", [])
+        )
         db.add(db_item)
     
     db.commit()
     db.close()
-    print("'El Jardin' menu loaded successfully!")
+    print("'El Jardin' menu refactored successfully with 3 separate lists!")
 
 if __name__ == "__main__":
     seed_full_menu()
