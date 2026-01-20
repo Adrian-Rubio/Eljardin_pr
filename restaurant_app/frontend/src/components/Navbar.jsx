@@ -66,7 +66,7 @@ const Navbar = () => {
                     RESERVAR
                 </Link>
                 <div className="nav-social-icons">
-                    <a href="https://instagram.com" target="_blank" rel="noreferrer"><Instagram size={20} /></a>
+                    <a href="https://www.instagram.com/eljardindearturosoria/?hl=es" target="_blank" rel="noreferrer"><Instagram size={20} /></a>
                     <a href="https://facebook.com" target="_blank" rel="noreferrer"><Facebook size={20} /></a>
                 </div>
             </div>
