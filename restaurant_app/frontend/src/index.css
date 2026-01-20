@@ -317,10 +317,345 @@ nav {
     display: flex;
     align-items: center;
     gap: 3.5rem;
-    /* Increased spacing */
 }
 
-/* ... existing styles ... */
+.btn-reserve-solid {
+    background-color: var(--primary);
+    color: white !important;
+    padding: 0.7rem 1.8rem;
+    border-radius: 0;
+    font-size: 11px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.2em;
+    transition: background 0.3s ease;
+}
+
+.btn-reserve-solid:hover {
+    background-color: var(--primary);
+}
+
+.nav-social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-social-icons a {
+    color: var(--text);
+    background: transparent;
+    border: none;
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease;
+}
+
+.nav-social-icons a:hover {
+    opacity: 0.5;
+}
+
+.navbar-logo-img {
+    height: 110px;
+    width: auto;
+    transition: transform 0.3s ease;
+}
+
+.navbar-logo-img:hover {
+    transform: scale(1.05);
+}
+
+/* Editable Components */
+.editable-input,
+.editable-textarea {
+    width: 100%;
+    border: 2px solid var(--primary);
+    background: white;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: inherit;
+    font-family: inherit;
+    color: var(--text);
+    outline: none;
+}
+
+.editable-textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.editable-controls {
+    position: absolute;
+    right: 5px;
+    top: -25px;
+    display: flex;
+    gap: 4px;
+    background: var(--primary);
+    border-radius: 4px;
+    padding: 2px;
+    z-index: 10;
+}
+
+.editable-controls button {
+    background: white;
+    border: none;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    color: var(--primary);
+    transition: all 0.2s;
+}
+
+.editable-controls button:hover {
+    background: var(--provincial-pink);
+}
+
+/* Admin Floater */
+.admin-floater {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.floater-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 10px 25px rgba(255, 74, 31, 0.4);
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.floater-btn:hover {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 15px 30px rgba(255, 74, 31, 0.5);
+}
+
+.floater-btn.secondary {
+    background: var(--secondary);
+    padding: 12px;
+    width: 44px;
+    height: 44px;
+    justify-content: center;
+    border-radius: 50%;
+    margin-left: auto;
+}
+
+.floater-btn.active {
+    background: #2ecc71;
+    box-shadow: 0 10px 25px rgba(46, 204, 113, 0.4);
+}
+
+.admin-link {
+    background-color: var(--primary);
+    color: white !important;
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.85rem !important;
+}
+
+.admin-link:hover {
+    transform: translateY(-2px);
+    background-color: var(--secondary);
+    box-shadow: 0 4px 12px rgba(255, 74, 31, 0.2);
+}
+
+.mobile-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text);
+}
+
+.mobile-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    padding: 2rem;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.mobile-nav-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.mobile-nav-links a {
+    text-decoration: none;
+    color: var(--text);
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .desktop-only {
+        display: none;
+    }
+
+    .mobile-toggle {
+        display: block;
+    }
+}
+
+main {
+    flex: 1;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    width: 100%;
+    padding: 1rem 2rem;
+}
+
+/* UI Components */
+h1,
+h2,
+h3 {
+    font-family: var(--font-bold);
+    color: var(--text);
+    text-transform: uppercase;
+}
+
+.btn-primary,
+.btn-secondary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 74, 31, 0.3);
+}
+
+.btn-primary:hover {
+    background: var(--secondary);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--text);
+    border: 2px solid var(--text);
+}
+
+.btn-secondary:hover {
+    background: var(--text);
+    color: white;
+}
+
+/* Home Page */
+.hero-full {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    height: 75vh;
+    min-height: 500px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-full img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Dish Gallery Slider - Full Width Impact */
+.dish-gallery-slider {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 80px 2%;
+    width: 98vw;
+    margin-left: calc(-49vw + 50%);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.dish-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    flex: 1;
+    overflow: hidden;
+}
+
+.slider-arrow {
+    background: none;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    padding: 10px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider-arrow:hover {
+    transform: scale(1.2);
+    opacity: 0.7;
+}
+
+.slider-arrow.left {
+    margin-right: 10px;
+}
+
+.slider-arrow.right {
+    margin-left: 10px;
+}
+
+.gallery-item {
+    aspect-ratio: 3/2;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: white;
+    transition: transform 0.5s ease;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s cubic-bezier(0.2, 0, 0.2, 1);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
 
 /* Identity Section */
 .identity-section {
