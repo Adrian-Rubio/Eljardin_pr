@@ -12,7 +12,7 @@
     font-style: normal;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap');
+@import url('https://fonts.cdnfonts.com/css/pier-sans');
 
 /* --- PREMIUM FOOTER REDESIGN --- */
 .site-footer {
@@ -37,7 +37,7 @@
     font-size: 11px;
     letter-spacing: 0.2em;
     margin-bottom: 25px;
-    font-family: var(--font-secondary);
+    font-family: var(--font-primary);
     font-weight: 500;
 }
 
@@ -173,9 +173,9 @@
     --background: var(--white-pearl);
     --text: var(--rich-black);
 
-    /* Typography - Updated to geometric Pier Sans vibe (Outfit) */
-    --font-primary: 'Playfair Display', serif;
-    --font-secondary: 'Outfit', sans-serif;
+    /* Typography - Updated to Pier Sans */
+    --font-primary: 'Pier Sans', sans-serif;
+    --font-secondary: 'Pier Sans', sans-serif;
     --base-font-size: 15px;
 
     /* Spacing & Borders */
