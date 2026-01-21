@@ -15,9 +15,9 @@ const Navbar = () => {
             name: 'CARTAS',
             path: '/menu',
             dropdown: [
-                { name: 'CARTA', path: '/menu/carta' },
-                { name: 'VINOS', path: '/menu/vinos' },
-                { name: 'COCTELERÍA', path: '/menu/cocteles' },
+                { name: 'Nuestra carta', path: '/menu/carta' },
+                { name: 'Nuestros vinos', path: '/menu/vinos' },
+                { name: 'Carta espirituosos', path: '/menu/cocteles' },
             ]
         },
         { name: 'EVENTOS', path: '/events' },
