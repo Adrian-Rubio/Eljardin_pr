@@ -26,6 +26,9 @@ conf = ConnectionConfig(
     VALIDATE_CERTS=True
 )
 
+print(f"DEBUG: Email Config Loaded. Server: {conf.MAIL_SERVER}, Port: {conf.MAIL_PORT}, User: {conf.MAIL_USERNAME}")
+
+
 @router.post("/event")
 async def send_event_email(contact_data: EventContactSchema, background_tasks: BackgroundTasks):
     """
