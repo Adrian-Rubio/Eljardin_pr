@@ -1449,9 +1449,220 @@ h3 {
 
 .back-link {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
+    /* ... existing styles ... */
+
+    /* EVENTS PAGE REDESIGN */
+    .events-page {
+        width: 100%;
+        background-color: var(--white-pearl);
+    }
+
+    .events-hero {
+        position: relative;
+        width: 100%;
+        height: 50vh;
+        min-height: 400px;
+        overflow: hidden;
+    }
+
+    .events-hero-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .events-hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.2);
+        /* Slight overlay for legibility if needed */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .events-hero-title {
+        color: white;
+        font-size: 3.5rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        font-family: var(--font-primary);
+    }
+
+    /* Intro Section */
+    .events-intro {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 100px 20px;
+        gap: 4rem;
+        align-items: center;
+        position: relative;
+    }
+
+    .events-intro-text {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .events-intro-text h2 {
+        font-family: var(--font-primary);
+        color: rgb(133, 139, 100);
+        /* Olive green matched */
+        font-size: 2.2rem;
+        font-weight: 500;
+    }
+
+    .events-intro-text p {
+        font-family: var(--font-secondary);
+        color: #555;
+        font-size: 0.95rem;
+        line-height: 1.8;
+        max-width: 400px;
+    }
+
+    .events-intro-image img {
+        width: 100%;
+        max-width: 500px;
+        border-radius: 4px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    /* Button Olive */
+    .btn-solid-olive {
+        background-color: rgb(133, 139, 100);
+        color: white;
+        border: none;
+        padding: 0.8rem 2.5rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: none;
+        /* As per screenshot "Solicitar información" is mixed case? No looks mostly lowercase or normal sentence case */
+        border-radius: 2px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-solid-olive:hover {
+        background-color: rgb(113, 119, 80);
+        transform: translateY(-2px);
+    }
+
+    /* Form Section */
+    .events-form-section {
+        max-width: 800px;
+        margin: 0 auto 100px;
+        padding: 0 20px;
+        position: relative;
+    }
+
+    .form-header h3 {
+        font-family: var(--font-primary);
+        color: rgb(133, 139, 100);
+        font-size: 1.8rem;
+        font-weight: 500;
+        margin-bottom: 2rem;
+        text-align: left;
+        /* Screenshot shows left aligned or centered form? Screenshot 2 form elements are wide */
+    }
+
+    .events-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .form-group-clean {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-group-clean label {
+        font-size: 0.85rem;
+        color: #666;
+        font-weight: 500;
+        text-transform: none;
+    }
+
+    .clean-input {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid #aaa;
+        /* Darker border like screenshot? Or black input line? Screenshot shows rounded rectangles with dark border */
+        border-radius: 8px;
+        /* Rounded corners prominent in screenshot */
+        font-family: var(--font-secondary);
+        font-size: 0.95rem;
+        outline: none;
+        transition: border-color 0.3s;
+        background: transparent;
+    }
+
+    .clean-input:focus {
+        border-color: rgb(133, 139, 100);
+    }
+
+    .form-check-clean {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 1rem;
+    }
+
+    .form-check-clean label {
+        font-size: 0.8rem;
+        color: #666;
+    }
+
+    .form-check-clean span {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .form-submit-container {
+        margin-top: 2rem;
+    }
+
+    .success-msg {
+        color: green;
+        margin-top: 1rem;
+        font-weight: 600;
+    }
+
+    .error-msg {
+        color: red;
+        margin-top: 1rem;
+        font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+        .events-intro {
+            grid-template-columns: 1fr;
+            padding: 50px 20px;
+            gap: 2rem;
+        }
+
+        .events-intro-image {
+            order: -1;
+        }
+
+        .events-hero-title {
+            font-size: 2.5rem;
+        }
+    }
+
     color: var(--text-muted);
     font-weight: 700;
     text-transform: uppercase;

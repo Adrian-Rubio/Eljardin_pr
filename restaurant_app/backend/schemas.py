@@ -81,3 +81,10 @@ class User(UserBase):
 class LoginRequest(BaseModel):
     username: str
     password: str
+
+class EventContactSchema(BaseModel):
+    name: str
+    email: str
+    phone: str
+    company: Optional[str] = None
+    message: Optional[str] = None
