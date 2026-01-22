@@ -31,19 +31,30 @@ async def send_event_email(contact_data: EventContactSchema, background_tasks: B
     """
     Sends an email with event inquiry details.
     """
+    # Verify credentials explicitly
+    if not conf.MAIL_PASSWORD or conf.MAIL_PASSWORD == "tu_password":
+        print("ERROR: Mail credentials not configured.")
+        raise HTTPException(status_code=500, detail="Configuration error: Email credentials missing.")
+
     html = f"""
-    <h3>Nueva Solicitud de Evento</h3>
-    <p><strong>Nombre:</strong> {contact_data.name}</p>
-    <p><strong>Email:</strong> {contact_data.email}</p>
-    <p><strong>Teléfono:</strong> {contact_data.phone}</p>
-    <p><strong>Empresa:</strong> {contact_data.company or 'No especificada'}</p>
-    <p><strong>Mensaje:</strong></p>
-    <p>{contact_data.message or 'Sin mensaje adicional'}</p>
+    <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+        <h2 style="color: #858b64;">Nueva Solicitud de Evento</h2>
+        <hr style="border: 0; border-top: 1px solid #ddd;" />
+        <p><strong>Nombre:</strong> {contact_data.name}</p>
+        <p><strong>Email:</strong> <a href="mailto:{contact_data.email}">{contact_data.email}</a></p>
+        <p><strong>Teléfono:</strong> {contact_data.phone}</p>
+        <p><strong>Empresa:</strong> {contact_data.company or 'No especificada'}</p>
+        <br/>
+        <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px;">
+            <p style="margin-top: 0;"><strong>Mensaje:</strong></p>
+            <p style="white-space: pre-wrap;">{contact_data.message or 'Sin mensaje adicional'}</p>
+        </div>
+    </div>
     """
 
     message = MessageSchema(
         subject=f"Nuevo Evento: {contact_data.name}",
-        recipients=[os.getenv("MAIL_RECIPIENT", "reservas@eljardindearturosoria.com")],
+        recipients=[os.getenv("MAIL_RECIPIENT", "arubio@cenval.es")],
         body=html,
         subtype=MessageType.html
     )
@@ -51,14 +62,11 @@ async def send_event_email(contact_data: EventContactSchema, background_tasks: B
     fm = FastMail(conf)
     
     try:
-        # If no credentials, just log (development mode)
-        if conf.MAIL_PASSWORD == "tu_password":
-            print("MOCK MAIL SENDING (No credentials):")
-            print(html)
-            return {"message": "Email simulation successful"}
-            
-        background_tasks.add_task(fm.send_message, message)
+        # Using await to catch errors immediately during the request
+        await fm.send_message(message)
+        print(f"Email sent successfully to {message.recipients}")
         return {"message": "Email sent successfully"}
     except Exception as e:
-        print(f"Error sending email: {e}")
-        return {"message": "Email sent successfully (mocked)"} # Return success to frontend even if mail fails to avoid blocking UI in dev
+        print(f"CRITICAL ERROR SENDING EMAIL: {str(e)}")
+        # Raise HTTP exception so frontend catches it
+        raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
