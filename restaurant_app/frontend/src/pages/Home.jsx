@@ -155,7 +155,7 @@ const Home = () => {
                     {/* Placeholder for real video, styled better */}
                     <div className="video-overlay" style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.1)', zIndex: 1 }}></div>
                     <img src="/images/imagenes%20genéricas/JAS-111.jpg" alt="Video Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                    <div className="play-button" onClick={() => window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')}>
+                    <div className="play-button" onClick={() => window.open('', '_blank')}>
                         <div className="play-icon"></div>
                     </div>
                 </div>

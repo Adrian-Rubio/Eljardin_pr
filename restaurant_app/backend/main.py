@@ -37,8 +37,8 @@ async def startup_event():
 # CORS Middleware Configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,
+    allow_origins=["*"], # Allow all for initial VPS setup ease
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )

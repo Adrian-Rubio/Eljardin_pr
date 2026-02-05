@@ -1,0 +1,16 @@
+[Unit]
+Description=Gunicorn instance to serve El Jardin API
+After=network.target
+
+[Service]
+User=root
+Group=www-data
+# Adjust this path if you clone somewhere else
+WorkingDirectory=/var/www/eljardin/restaurant_app/backend
+Environment="PATH=/var/www/eljardin/restaurant_app/backend/venv/bin"
+# Ensure .env is loaded or env vars are set here
+EnvironmentFile=/var/www/eljardin/restaurant_app/backend/.env
+ExecStart=/var/www/eljardin/restaurant_app/backend/venv/bin/gunicorn -k uvicorn.workers.UvicornWorker -w 4 -b 127.0.0.1:8000 main:app
+
+[Install]
+WantedBy=multi-user.target
