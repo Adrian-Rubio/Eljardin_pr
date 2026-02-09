@@ -14,6 +14,7 @@ import { ThemeProvider } from './context/ThemeContext'
 import Footer from './components/Footer'
 import EditModeIndicator from './components/Admin/EditModeIndicator'
 import './App.css'
+// Forced HMR update for Reservations page changes
 
 function App() {
     return (
