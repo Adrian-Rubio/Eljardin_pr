@@ -28,7 +28,13 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <div className="nav-logo">
-                <Link to="/" onClick={() => setIsOpen(false)}>
+                <Link
+                    to="/"
+                    onClick={() => {
+                        setIsOpen(false);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                >
                     <img
                         src="/images/logo_jardin.png"
                         alt="El Jardín de Arturo Soria"
@@ -43,15 +49,25 @@ const Navbar = () => {
                     <li
                         key={link.name}
                         className={link.dropdown ? 'has-dropdown' : ''}
-                        onMouseEnter={() => link.dropdown && setIsCartasOpen(true)}
-                        onMouseLeave={() => link.dropdown && setIsCartasOpen(false)}
                     >
-                        <Link to={link.path}>{link.name}</Link>
+                        {link.dropdown ? (
+                            <a
+                                href="#"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setIsCartasOpen(!isCartasOpen);
+                                }}
+                            >
+                                {link.name}
+                            </a>
+                        ) : (
+                            <Link to={link.path}>{link.name}</Link>
+                        )}
                         {link.dropdown && isCartasOpen && (
                             <ul className="dropdown-menu">
                                 {link.dropdown.map(subItem => (
                                     <li key={subItem.path}>
-                                        <Link to={subItem.path}>{subItem.name}</Link>
+                                        <Link to={subItem.path} onClick={() => setIsCartasOpen(false)}>{subItem.name}</Link>
                                     </li>
                                 ))}
                             </ul>
@@ -89,9 +105,41 @@ const Navbar = () => {
                         <ul className="mobile-nav-links">
                             {links.map(link => (
                                 <li key={link.path}>
-                                    <Link to={link.path} onClick={() => setIsOpen(false)}>
-                                        {link.name}
-                                    </Link>
+                                    {link.dropdown ? (
+                                        <>
+                                            <a
+                                                href="#"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    setIsCartasOpen(!isCartasOpen);
+                                                }}
+                                            >
+                                                {link.name}
+                                            </a>
+                                            {isCartasOpen && (
+                                                <ul style={{ paddingLeft: '20px', marginTop: '10px' }}>
+                                                    {link.dropdown.map(subItem => (
+                                                        <li key={subItem.path} style={{ marginBottom: '10px' }}>
+                                                            <Link
+                                                                to={subItem.path}
+                                                                onClick={() => {
+                                                                    setIsOpen(false);
+                                                                    setIsCartasOpen(false);
+                                                                }}
+                                                                style={{ fontSize: '1rem', color: '#c5a04f' }}
+                                                            >
+                                                                {subItem.name}
+                                                            </Link>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <Link to={link.path} onClick={() => setIsOpen(false)}>
+                                            {link.name}
+                                        </Link>
+                                    )}
                                 </li>
                             ))}
                             <li style={{ marginTop: '1rem' }}>

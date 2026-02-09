@@ -173,6 +173,30 @@
     background: #fff;
 }
 
+.cover-manager-wrapper iframe {
+    width: 100%;
+    height: 100%;
+}
+
+/* Mobile: Scale the iframe to fit */
+@media (max-width: 768px) {
+    .cover-manager-wrapper {
+        min-height: 700px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .cover-manager-wrapper iframe {
+        width: 125%;
+        /* Make it wider so scaling looks better */
+        height: 875px;
+        /* Taller to compensate for scale */
+        transform: scale(0.8);
+        transform-origin: top left;
+        border: none;
+    }
+}
+
 
 /* --- PREMIUM EVENTS FORM --- */
 .events-form {
