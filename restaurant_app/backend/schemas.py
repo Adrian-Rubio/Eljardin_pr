@@ -87,4 +87,5 @@ class EventContactSchema(BaseModel):
     email: str
     phone: str
     company: Optional[str] = None
+    client_type: str = "particular"
     message: Optional[str] = None

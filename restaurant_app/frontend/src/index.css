@@ -236,7 +236,13 @@ header {
     border-bottom: 1px solid rgba(0, 0, 0, 0.03);
     transition: all 0.4s ease;
 }
-
+/* ... existing content ... */
+/* Video Section */
+.video-section {
+    padding: 120px 0;
+    text-align: center;
+    background: transparent; /* Changed from #fdfaf5 to transparent to show body bg */
+}
 nav {
     max-width: 100%;
     /* Make it fluid to allow logo to go further left */

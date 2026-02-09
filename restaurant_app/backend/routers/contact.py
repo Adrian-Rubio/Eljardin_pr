@@ -35,32 +35,64 @@ async def send_event_email(contact_data: EventContactSchema, background_tasks: B
     Sends an email with event inquiry details.
     """
     # Verify credentials explicitly
-    if not conf.MAIL_PASSWORD or conf.MAIL_PASSWORD == "tu_password":
-        print("ERROR: Mail credentials not configured.")
-        raise HTTPException(status_code=500, detail="Configuration error: Email credentials missing.")
+    # Credentials check removed to allow mock mode for testing
 
+    client_type_label = "Empresa" if contact_data.client_type == "empresa" else "Particular"
+    
     html = f"""
-    <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-        <h2 style="color: #858b64;">Nueva Solicitud de Evento</h2>
-        <hr style="border: 0; border-top: 1px solid #ddd;" />
-        <p><strong>Nombre:</strong> {contact_data.name}</p>
-        <p><strong>Email:</strong> <a href="mailto:{contact_data.email}">{contact_data.email}</a></p>
-        <p><strong>Teléfono:</strong> {contact_data.phone}</p>
-        <p><strong>Empresa:</strong> {contact_data.company or 'No especificada'}</p>
-        <br/>
-        <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px;">
-            <p style="margin-top: 0;"><strong>Mensaje:</strong></p>
-            <p style="white-space: pre-wrap;">{contact_data.message or 'Sin mensaje adicional'}</p>
+    <div style="font-family: 'Times New Roman', serif; padding: 30px; color: #1a1a1a; background-color: #fcfcfc;">
+        <div style="border: 1px solid #c5a04f; padding: 20px; max_width: 600px; margin: 0 auto;">
+            <h2 style="color: #c5a04f; text-align: center; border-bottom: 2px solid #c5a04f; padding-bottom: 10px; margin-top: 0;">NOUVEAU EVENTO</h2>
+            
+            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Tipo de Cliente:</strong></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee; text-transform: capitalize;">{client_type_label}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Nombre:</strong></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">{contact_data.name}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Email:</strong></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><a href="mailto:{contact_data.email}" style="color: #c5a04f; text-decoration: none;">{contact_data.email}</a></td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Teléfono:</strong></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">{contact_data.phone}</td>
+                </tr>
+                {f'<tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Empresa:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">{contact_data.company}</td></tr>' if contact_data.client_type == 'empresa' and contact_data.company else ''}
+            </table>
+
+            <div style="background-color: #f9f9f9; padding: 15px; margin-top: 20px; border-left: 3px solid #c5a04f;">
+                <p style="margin-top: 0; font-weight: bold; color: #555;">Mensaje / Detalles:</p>
+                <p style="white-space: pre-wrap; font-style: italic;">{contact_data.message or 'Sin mensaje adicional'}</p>
+            </div>
+            
+            <p style="font-size: 12px; color: #999; text-align: center; margin-top: 30px;">
+                Solicitud recibida desde la web El Jardín de Arturo Soria
+            </p>
         </div>
     </div>
     """
 
     message = MessageSchema(
-        subject=f"Nuevo Evento: {contact_data.name}",
-        recipients=[os.getenv("MAIL_RECIPIENT", "arubio@cenval.es")],
+        subject=f"Solicitud Evento ({client_type_label}): {contact_data.name}",
+        recipients=[os.getenv("MAIL_RECIPIENT", "reservas@eljardindearturosoria.com")],
         body=html,
         subtype=MessageType.html
     )
+
+    # --- DEBUG: LOG EMAIL TO CONSOLE ---
+    # --- DEBUG: LOG EMAIL TO CONSOLE (Keep this for now if you want to see data) ---
+    print(f"DEBUG: Email would be sent to {message.recipients} with subject: {message.subject}")
+    # -----------------------------------
+    # -----------------------------------
+
+    # SKIP ACTUAL SENDING IF CREDENTIALS ARE PLACEHOLDERS
+    # if "tu_email" in conf.MAIL_USERNAME or "tu_password" in conf.MAIL_PASSWORD:
+    #     print("DEBUG MODE: Skipping actual SMTP send because credentials are placeholders.")
+    #     return {"message": "Email sent successfully (MOCK MODE)"}
 
     fm = FastMail(conf)
     

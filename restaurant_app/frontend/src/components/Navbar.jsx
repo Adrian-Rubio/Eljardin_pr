@@ -20,7 +20,7 @@ const Navbar = () => {
                 { name: 'Carta espirituosos', path: '/menu/cocteles' },
             ]
         },
-        { name: 'EVENTOS', path: '/events' },
+        { name: 'EVENTOS', path: '/reservations' },
         { name: 'PRENSA', path: '/press' },
         { name: 'RESTAURANTES GRUPO', path: '/grupo' },
     ];

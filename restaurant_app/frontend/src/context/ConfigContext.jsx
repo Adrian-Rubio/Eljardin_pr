@@ -10,12 +10,12 @@ const ConfigContext = createContext();
 export const ConfigProvider = ({ children }) => {
     const [siteConfig, setSiteConfig] = useState({
         welcomeTitle: 'EL PLACER ES NUESTRO',
-        welcomeSubtitle: "Bienvenido a Gulah, el templo de los auténticos Po'Boys. Aquí cada bocado es una explosión sin filtros.",
-        address: 'Arturo Soria, 198, 28043, Madrid.',
-        phone: '+34 912 345 678',
-        email: 'info@gulahpoboys.com',
-        reservation_email: 'reservas@gulahpoboys.com',
-        hours: 'Lunes a Viernes: 10am-24pm | Sábados y Domingos: 13pm-24pm'
+        welcomeSubtitle: "Bienvenido a El Jardín de Arturo Soria. Un oasis gastronómico donde cada detalle cuenta.",
+        address: 'c/ Arturo Soria, 207, 28043, Madrid.',
+        phone: '91 896 59 25',
+        email: 'info@eljardindearturosoria.com',
+        reservation_email: 'reservas@eljardindearturosoria.com',
+        hours: 'De 13:00h a 01:00h | D, L y M: 13:00h - 17:00h'
     });
 
     const fetchConfig = async () => {
