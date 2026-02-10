@@ -5,13 +5,18 @@
     flex-direction: column;
     padding-bottom: 4rem;
     font-family: 'Pier Sans', sans-serif;
-    background-color: #fcfcfc;
-    /* Subtle off-white background */
+    background-color: transparent;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
+        url('/images/floral-bg.png');
+    background-size: auto, 1200px;
+    background-repeat: repeat;
+    background-attachment: fixed;
 }
 
 .page-header {
     text-align: center;
-    padding: 3rem 1rem;
+    padding: 3rem 1rem 0 1rem;
     background-color: transparent;
 }
 
@@ -37,38 +42,59 @@
 }
 
 /* --- HERO SECTION: SPLIT BUTTONS --- */
+/* --- HERO SECTION: SPLIT BUTTONS --- */
+/* --- HERO SECTION: SPLIT BUTTONS --- */
 .reservations-hero-split {
     display: flex;
     flex-direction: column;
     gap: 30px;
     padding: 20px;
     max-width: 1200px;
+    /* Restored wider width */
     width: 100%;
-    margin: 0 auto 5rem auto;
+    margin: 10px auto 10vh auto;
+    /* Very small top margin to pull images up */
+    flex-grow: 1;
+    justify-content: start;
+    /* Start aligning from top to respect the small margin */
+    min-height: 55vh;
+    /* Ensure it takes up significant vertical space */
 }
 
 @media (min-width: 768px) {
     .reservations-hero-split {
         flex-direction: row;
         height: 60vh;
-        max-height: 550px;
+        /* Fixed prominent height */
+        max-height: 600px;
+        /* Cap height */
+        align-items: stretch;
+        /* Restore rectangular shape */
+    }
+
+    .hero-option-card {
+        flex: 1;
+        max-width: none;
+        /* Allow full expansion */
+        aspect-ratio: auto;
+        /* Remove square constraint */
     }
 }
 
 .hero-option-card {
     flex: 1;
     position: relative;
-    border-radius: 4px;
-    /* Sharper corners for elegance */
+    border-radius: 20px;
+    /* More rounded corners for elegance */
     overflow: hidden;
     cursor: pointer;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
     transition: all 0.5s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(197, 160, 79, 0.2);
-    /* Subtle gold border */
+    border: 2px solid rgba(197, 160, 79, 0.5);
+    /* Thicker and more visible gold border */
 }
 
 .hero-option-card:hover {

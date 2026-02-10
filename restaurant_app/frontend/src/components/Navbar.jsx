@@ -49,13 +49,16 @@ const Navbar = () => {
                     <li
                         key={link.name}
                         className={link.dropdown ? 'has-dropdown' : ''}
+                        onMouseEnter={() => link.dropdown && setIsCartasOpen(true)}
+                        onMouseLeave={() => link.dropdown && setIsCartasOpen(false)}
                     >
                         {link.dropdown ? (
                             <a
                                 href="#"
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    setIsCartasOpen(!isCartasOpen);
+                                    // Optional: clicking can still toggle or navigate if needed
+                                    // but hover handles main interaction now
                                 }}
                             >
                                 {link.name}
