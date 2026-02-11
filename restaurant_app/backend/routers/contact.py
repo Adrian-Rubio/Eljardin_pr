@@ -42,7 +42,7 @@ async def send_event_email(contact_data: EventContactSchema, background_tasks: B
     html = f"""
     <div style="font-family: 'Times New Roman', serif; padding: 30px; color: #1a1a1a; background-color: #fcfcfc;">
         <div style="border: 1px solid #c5a04f; padding: 20px; max_width: 600px; margin: 0 auto;">
-            <h2 style="color: #c5a04f; text-align: center; border-bottom: 2px solid #c5a04f; padding-bottom: 10px; margin-top: 0;">NOUVEAU EVENTO</h2>
+            <h2 style="color: #c5a04f; text-align: center; border-bottom: 2px solid #c5a04f; padding-bottom: 10px; margin-top: 0;">Petición de Evento</h2>
             
             <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
                 <tr>
@@ -78,7 +78,7 @@ async def send_event_email(contact_data: EventContactSchema, background_tasks: B
 
     message = MessageSchema(
         subject=f"Solicitud Evento ({client_type_label}): {contact_data.name}",
-        recipients=[os.getenv("MAIL_RECIPIENT", "reservas@eljardindearturosoria.com")],
+        recipients=[os.getenv("MAIL_RECIPIENT", "arubio@cenval.es")],
         body=html,
         subtype=MessageType.html
     )

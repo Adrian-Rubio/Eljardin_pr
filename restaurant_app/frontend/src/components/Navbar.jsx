@@ -21,8 +21,6 @@ const Navbar = () => {
             ]
         },
         { name: 'EVENTOS', path: '/reservations' },
-        { name: 'PRENSA', path: '/press' },
-        { name: 'RESTAURANTES GRUPO', path: '/grupo' },
     ];
 
     return (

@@ -54,13 +54,8 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* 3. VALET (APARCACOCHES) */}
-                <div className="footer-col" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <div className="valet-box">
-                        <User size={30} strokeWidth={1} />
-                        <span>Aparcacoches</span>
-                    </div>
-                </div>
+                {/* 3. VALET REMOVED */}
+                <div className="footer-col"></div>
 
                 {/* 4. RESERVAS BUTTON */}
                 <div className="footer-col" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
