@@ -1,13 +1,24 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, Instagram, Facebook } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isCartasOpen, setIsCartasOpen] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const toggleMenu = () => setIsOpen(!isOpen);
+
+    const handleReservar = () => {
+        setIsOpen(false);
+        if (location.pathname === '/') {
+            document.getElementById('covermanager-section')?.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            navigate('/', { state: { scrollTo: 'covermanager-section' } });
+        }
+    };
 
     const links = [
         { name: 'EL JARDÍN DE ARTURO SORIA', path: '/' },
@@ -19,7 +30,7 @@ const Navbar = () => {
                 { name: 'Nuestros vinos', path: '/menu/vinos' },
             ]
         },
-        { name: 'EVENTOS', path: '/reservations' },
+        { name: 'EVENTOS', path: '/events' },
     ];
 
     return (
@@ -78,9 +89,9 @@ const Navbar = () => {
 
             {/* Desktop Right: Reserve & Socials */}
             <div className="nav-right desktop-only">
-                <Link to="/reservations" className="btn-reserve-solid">
+                <button onClick={handleReservar} className="btn-reserve-solid">
                     RESERVAR
-                </Link>
+                </button>
                 <div className="nav-social-icons">
                     <a href="https://www.instagram.com/eljardindearturosoria/?hl=es" target="_blank" rel="noreferrer"><Instagram size={20} /></a>
                     <a href="https://facebook.com" target="_blank" rel="noreferrer"><Facebook size={20} /></a>
@@ -143,9 +154,9 @@ const Navbar = () => {
                                 </li>
                             ))}
                             <li style={{ marginTop: '1rem' }}>
-                                <Link to="/reservations" className="btn-reserve-solid" onClick={() => setIsOpen(false)}>
+                                <button className="btn-reserve-solid" onClick={handleReservar}>
                                     RESERVAR
-                                </Link>
+                                </button>
                             </li>
                             <li className="mobile-socials">
                                 <Instagram size={24} />

@@ -1,13 +1,26 @@
 import { useState, useEffect } from 'react';
 import { Plus, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useConfig } from '../context/ConfigContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import EditableText from '../components/Editable/EditableText';
 
 const Home = () => {
     const { siteConfig } = useConfig();
+    const location = useLocation();
     const [activeFaq, setActiveFaq] = useState(null);
+
+    const scrollToCoverManager = () => {
+        document.getElementById('covermanager-section')?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        if (location.state?.scrollTo === 'covermanager-section') {
+            setTimeout(() => {
+                document.getElementById('covermanager-section')?.scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+        }
+    }, [location.state]);
     const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
     const [galleryIndex, setGalleryIndex] = useState(0);
 
@@ -60,11 +73,10 @@ const Home = () => {
     // Hero Carousel — mantener Alma-39.jpg + 4 nuevas imágenes
     // NOTA: colocar las imágenes del banner en /public/images/banner/
     const heroImages = [
-        "/images/imagenes%20genéricas/Alma-39.jpg",
-        "/images/banner/banner-home1.jpg",
-        "/images/banner/banner-home2.jpg",
-        "/images/banner/banner-home3.jpg",
-        "/images/banner/banner-home4.jpg",
+        "/images/banner/Banner%20Home%201.jpg",
+        "/images/banner/Banner%20home%202.jpg",
+        "/images/banner/banner%20home%203.jpg",
+        "/images/banner/banner%20home%204.jpg",
     ];
 
     // Dish Gallery Images
@@ -173,6 +185,7 @@ const Home = () => {
                         key={currentHeroIndex}
                         src={heroImages[currentHeroIndex]}
                         alt="El Jardín de Arturo Soria - Ambiente"
+                        loading={currentHeroIndex === 0 ? 'eager' : 'lazy'}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -291,7 +304,7 @@ const Home = () => {
                                 exit={{ opacity: 0, x: -20 }}
                                 transition={{ duration: 0.5 }}
                             >
-                                <img src={dish.img} alt={`Plato El Jardín ${dish.id}`} />
+                                <img src={dish.img} alt={`Plato El Jardín ${dish.id}`} loading="lazy" />
                             </motion.div>
                         ))}
                     </AnimatePresence>
@@ -304,7 +317,7 @@ const Home = () => {
             {/* 3. IDENTITY SECTION (BENEDETTI) */}
             <section className="identity-section">
                 <div className="identity-left">
-                    <img src="/images/HotConcepts.png" alt="Premio Hot Concepts Ganador 2021" />
+                    <img src="/images/HotConcepts.png" alt="Premio Hot Concepts Ganador 2021" loading="lazy" />
                 </div>
                 <div className="identity-right">
                     <h2 className="section-title">El Jardín de Arturo Soria</h2>
@@ -349,6 +362,7 @@ const Home = () => {
                                         exit={{ opacity: 0 }}
                                         transition={{ duration: 0.6 }}
                                         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                                        loading="lazy"
                                         onError={(e) => { e.target.style.background = '#e0ddd8'; e.target.src = ''; }}
                                     />
                                 </AnimatePresence>
@@ -387,13 +401,14 @@ const Home = () => {
             {/* 5. SECCIÓN RESERVAS / EVENTOS (2 bloques) */}
             <section style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '420px' }}>
                 {/* Bloque Reservas */}
-                <Link
-                    to="/reservations"
-                    style={{ position: 'relative', display: 'block', overflow: 'hidden', textDecoration: 'none' }}
+                <div
+                    onClick={scrollToCoverManager}
+                    style={{ position: 'relative', display: 'block', overflow: 'hidden', textDecoration: 'none', cursor: 'pointer' }}
                 >
                     <img
                         src="/images/imagenes%20genéricas/JAS-111.jpg"
                         alt="Reservas"
+                        loading="lazy"
                         style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.5s' }}
                         onMouseOver={e => e.currentTarget.style.transform = 'scale(1.04)'}
                         onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
@@ -407,7 +422,7 @@ const Home = () => {
                             Reservas
                         </h2>
                     </div>
-                </Link>
+                </div>
 
                 {/* Bloque Eventos */}
                 <Link
@@ -417,6 +432,7 @@ const Home = () => {
                     <img
                         src="/images/imagenes%20genéricas/Alma-41.jpg"
                         alt="Eventos"
+                        loading="lazy"
                         style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.5s' }}
                         onMouseOver={e => e.currentTarget.style.transform = 'scale(1.04)'}
                         onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}
@@ -483,7 +499,7 @@ const Home = () => {
             </section>
 
             {/* 8. COVERMANAGER — Formulario de reservas */}
-            <section style={{ padding: '4rem 2rem', background: '#faf9f7', textAlign: 'center' }}>
+            <section id="covermanager-section" style={{ padding: '4rem 2rem', background: '#faf9f7', textAlign: 'center' }}>
                 <h2 style={{ fontSize: '1.8rem', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '2rem' }}>
                     Reserva tu mesa
                 </h2>
