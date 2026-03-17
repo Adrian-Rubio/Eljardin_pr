@@ -52,15 +52,7 @@ const PREFERRED_ORDER = [
     'ROSADOS VT CASTILLA-LEÓN',
     'CAVAS Y CHAMPAGNES',
     'VINOS GENEROSOS Y DULCES (POR COPA)',
-    // Cocteles
-    'COCTELES',
-    'WHISKY',
-    'RON',
-    'VODKA',
-    'TEQUILA',
-    'GIN',
-    'VERMÚS',
-    'LICORES'
+    'VARIOS'
 ];
 
 const Menu = () => {
@@ -74,24 +66,14 @@ const Menu = () => {
         const vinosCats = [
             'TINTOS', 'DOP RIBERA', 'BLANCOS', 'ROSADOS', 'CAVAS', 'VINOS GENEROSOS'
         ];
-        const coctelesCats = [
-            'COCTELES', 'WHISKY', 'RON', 'VODKA', 'TEQUILA', 'GIN', 'VERMÚS', 'LICORES'
-        ];
-
         if (type === 'vinos') {
             return items.filter(item =>
                 vinosCats.some(c => (item.category || '').toUpperCase().includes(c))
             );
         }
-        if (type === 'cocteles') {
-            return items.filter(item =>
-                coctelesCats.some(c => (item.category || '').toUpperCase().includes(c))
-            );
-        }
         if (type === 'carta') {
             return items.filter(item =>
-                !vinosCats.some(c => (item.category || '').toUpperCase().includes(c)) &&
-                !coctelesCats.some(c => (item.category || '').toUpperCase().includes(c))
+                !vinosCats.some(c => (item.category || '').toUpperCase().includes(c))
             );
         }
         return items;

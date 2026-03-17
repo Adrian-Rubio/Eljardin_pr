@@ -17,7 +17,6 @@ const Navbar = () => {
             dropdown: [
                 { name: 'Nuestra carta', path: '/menu/carta' },
                 { name: 'Nuestros vinos', path: '/menu/vinos' },
-                { name: 'Carta espirituosos', path: '/menu/cocteles' },
             ]
         },
         { name: 'EVENTOS', path: '/reservations' },
